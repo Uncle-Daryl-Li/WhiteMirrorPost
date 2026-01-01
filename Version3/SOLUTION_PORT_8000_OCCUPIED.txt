@@ -1,0 +1,121 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║         PORT 8000 OCCUPIED - SOLUTION GUIDE                   ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+PROBLEM FOUND:
+  Port 8000 is occupied by process ID 18936
+  This prevents the backend server from starting.
+
+
+═══════════════════════════════════════════════════════════════
+  SOLUTION 1: Kill the Process (RECOMMENDED)
+═══════════════════════════════════════════════════════════════
+
+This is the FASTEST solution.
+
+Step 1: Run this script
+  ► Double click: kill_port_8000.bat
+
+Step 2: Start the project
+  ► Double click: start.bat
+
+Done! The project should now start successfully.
+
+
+═══════════════════════════════════════════════════════════════
+  SOLUTION 2: Use Port 8001 Instead
+═══════════════════════════════════════════════════════════════
+
+If you need to keep the process on port 8000:
+
+Step 1: Start servers on different port
+  ► Double click: start_with_port_8001.bat
+
+Step 2: Update SaaS.html to use port 8001
+
+  Open SaaS.html with a text editor
+  Find this line (around line 464):
+    const response = await fetch('http://localhost:8000/api/generate', {
+
+  Change to:
+    const response = await fetch('http://localhost:8001/api/generate', {
+
+  Save the file.
+
+Step 3: Restart the frontend
+  Close the Frontend window
+  Run: start_with_port_8001.bat again
+
+
+═══════════════════════════════════════════════════════════════
+  SOLUTION 3: Manual Command Line
+═══════════════════════════════════════════════════════════════
+
+If batch files don't work:
+
+Terminal 1 - Kill process manually:
+  taskkill /PID 18936 /F
+
+Terminal 2 - Start backend:
+  cd D:\WhiteMirror\Post\Version3
+  python server.py
+
+Terminal 3 - Start frontend:
+  cd D:\WhiteMirror\Post\Version3
+  python -m http.server 8080
+
+Browser:
+  http://localhost:8080/Landing page.html
+
+
+═══════════════════════════════════════════════════════════════
+  WHAT IS USING PORT 8000?
+═══════════════════════════════════════════════════════════════
+
+Process ID 18936 is occupying port 8000.
+
+To check what it is:
+  1. Open Task Manager (Ctrl+Shift+Esc)
+  2. Go to Details tab
+  3. Look for PID 18936
+  4. See what program it is
+
+It might be:
+  • A previous instance of server.py
+  • Another Python script
+  • Another web server
+
+
+═══════════════════════════════════════════════════════════════
+  RECOMMENDED ACTION
+═══════════════════════════════════════════════════════════════
+
+>>> Just run: kill_port_8000.bat
+
+Then run: start.bat
+
+This should solve the problem in 10 seconds!
+
+
+═══════════════════════════════════════════════════════════════
+  FILES CREATED FOR YOU
+═══════════════════════════════════════════════════════════════
+
+✓ kill_port_8000.bat           - Kill the process on port 8000
+✓ start_with_port_8001.bat     - Use port 8001 instead
+✓ server_port_8001.py          - Backend server for port 8001
+✓ SOLUTION_PORT_8000_OCCUPIED.txt - This file
+
+
+═══════════════════════════════════════════════════════════════
+
+         TRY THIS NOW:
+
+         1. Double click: kill_port_8000.bat
+         2. Double click: start.bat
+         3. Enjoy!
+
+═══════════════════════════════════════════════════════════════

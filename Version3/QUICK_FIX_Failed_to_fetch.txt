@@ -1,0 +1,167 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║         ERROR: Failed to fetch - QUICK FIX                    ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+ERROR MESSAGE:
+  "生成失败: Failed to fetch
+   请确保:
+   1. 后端服务器正在运行 (python server.py)
+   2. 地址为 http://localhost:8000"
+
+
+PROBLEM:
+  The backend server is NOT running or not accessible.
+
+
+═══════════════════════════════════════════════════════════════
+  SOLUTION - Follow These Steps
+═══════════════════════════════════════════════════════════════
+
+┌───────────────────────────────────────────────────────────────┐
+│  Step 1: Check if Backend is Running                         │
+└───────────────────────────────────────────────────────────────┘
+
+Look at your open windows. Do you see a window titled:
+  "MirrorPost Backend" or "MirrorPost Backend Server"?
+
+✓ YES - Go to Step 2
+✗ NO  - Go to Step 3
+
+
+┌───────────────────────────────────────────────────────────────┐
+│  Step 2: Backend Window Exists - Check for Errors            │
+└───────────────────────────────────────────────────────────────┘
+
+Look at the backend window content. Do you see:
+
+✓ "Uvicorn running on http://0.0.0.0:8000"
+  → Backend is OK! Problem might be CORS or port
+  → Try: Close frontend, restart start.bat
+
+✗ ERROR messages (red text)
+  → Backend failed to start
+  → Common errors:
+     - "Address already in use" → Port 8000 occupied
+     - "GOOGLE_API_KEY not found" → .env file issue
+     - "ModuleNotFoundError" → Missing dependency
+  → Copy the error and tell me!
+
+
+┌───────────────────────────────────────────────────────────────┐
+│  Step 3: Backend is NOT Running - Start It Now               │
+└───────────────────────────────────────────────────────────────┘
+
+Option A - Use start script (RECOMMENDED):
+  1. Close ALL MirrorPost windows
+  2. Double click: start.bat
+  3. You should see TWO new windows open:
+     - MirrorPost Backend
+     - MirrorPost Frontend
+  4. Wait 5 seconds
+  5. Try generating again in browser
+
+Option B - Start backend manually:
+  1. Double click: start_backend_only.bat
+  2. Wait until you see: "Uvicorn running on..."
+  3. Keep this window OPEN
+  4. Go back to browser and try again
+
+
+═══════════════════════════════════════════════════════════════
+  IMPORTANT: Keep Backend Window Open!
+═══════════════════════════════════════════════════════════════
+
+The backend server window MUST stay open while using the app.
+
+Correct setup:
+  ✓ Backend window - showing "Uvicorn running..." (KEEP OPEN)
+  ✓ Frontend window - showing "Serving HTTP on..." (KEEP OPEN)
+  ✓ Browser - showing the app interface
+
+If you close the backend window, you'll get "Failed to fetch"!
+
+
+═══════════════════════════════════════════════════════════════
+  COMMON MISTAKES
+═══════════════════════════════════════════════════════════════
+
+❌ Mistake 1: Only started frontend, forgot backend
+   → You need BOTH servers running!
+
+❌ Mistake 2: Backend window closed automatically
+   → Backend had an error, check the error message
+
+❌ Mistake 3: Wrong port (8000 vs 8001)
+   → If using port 8001, update SaaS.html
+
+❌ Mistake 4: Backend window minimized, thought it wasn't running
+   → Check taskbar for backend window
+
+
+═══════════════════════════════════════════════════════════════
+  DIAGNOSTIC CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+Run this to check backend status:
+  ► Double click: check_backend.bat
+
+This will tell you:
+  - Is port 8000 listening?
+  - Can we connect to the API?
+  - Is the API responding?
+
+
+═══════════════════════════════════════════════════════════════
+  STEP-BY-STEP RESTART (Most Reliable)
+═══════════════════════════════════════════════════════════════
+
+1. Close ALL windows (backend, frontend, browser)
+
+2. Open TWO Command Prompt windows:
+
+   Window 1 - Backend:
+     cd D:\WhiteMirror\Post\Version3
+     python server.py
+     → Wait for "Uvicorn running on http://0.0.0.0:8000"
+
+   Window 2 - Frontend:
+     cd D:\WhiteMirror\Post\Version3
+     python -m http.server 8080
+     → Wait for "Serving HTTP on..."
+
+3. Open browser:
+   http://localhost:8080/Landing page.html
+
+4. Try generating again!
+
+
+═══════════════════════════════════════════════════════════════
+  STILL NOT WORKING?
+═══════════════════════════════════════════════════════════════
+
+Please tell me:
+
+1. Do you see the backend window? (Yes/No)
+
+2. What does the backend window show?
+   (Copy the last few lines)
+
+3. Run: check_backend.bat
+   (Copy all output)
+
+4. Screenshot of all open windows would help!
+
+
+═══════════════════════════════════════════════════════════════
+
+         QUICK ACTION:
+
+         1. Close all windows
+         2. Double click: start.bat
+         3. Wait for TWO windows to open
+         4. Try again in browser
+
+═══════════════════════════════════════════════════════════════

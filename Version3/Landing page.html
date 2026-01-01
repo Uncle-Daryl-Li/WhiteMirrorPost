@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MirrorPost AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* --- 全局设置 (保持不变) --- */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f8fafc; height: 100vh; overflow: hidden; position: relative; }
+
+  /* --- 导航栏 (保持不变) --- */
+  .site-header { position: absolute; top: 0; left: 0; width: 100%; padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+  .logo-container { display: flex; align-items: center; text-decoration: none; opacity: 0.9; transition: opacity 0.2s ease; }
+  .logo-container:hover { opacity: 1; }
+  .logo-container img { height: 54px; width: auto; display: block; }
+  .user-action-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: transparent; border: none; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; z-index: 200; }
+  .user-icon-svg { width: 28px; height: 28px; stroke: #1a1a1a; stroke-width: 2; fill: none; transition: stroke 0.2s ease; }
+  .user-action-btn:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.05); }
+  .user-action-btn:hover .user-icon-svg { stroke: #000000; }
+
+  /* --- 背景与光斑 (保持不变) --- */
+  #smart-bloom-bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; background-color: #FFFFFF; transition: opacity 0.5s ease; }
+  body:has(.capsule-btn:hover) #smart-bloom-bg-layer { opacity: 0.1; }
+  #center-halo-layer { position: absolute; top: 50%; left: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
+  .halo-blob { position: absolute; top: 50%; left: 50%; border-radius: 50%; filter: blur(70px); opacity: 0; transform: translate(-50%, -50%) scale(0.2); transition: transform 1s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.8s ease; }
+  .hb-1 { background-color: #0E7490; width: 350px; height: 350px; z-index: 1; transition-delay: 0s; }   
+  .hb-2 { background-color: #8B5CF6; width: 400px; height: 400px; z-index: 2; transition-delay: 0.1s; } 
+  .hb-3 { background-color: #EC4899; width: 450px; height: 450px; z-index: 3; transition-delay: 0.2s; } 
+  .hb-4 { background-color: #F97316; width: 320px; height: 320px; z-index: 4; transition-delay: 0.3s; } 
+  .hb-5 { background-color: #3B82F6; width: 380px; height: 380px; z-index: 5; transition-delay: 0.4s; } 
+  body:has(.capsule-btn:hover) .hb-1 { transform: translate(-130%, -120%) scale(1); }
+  body:has(.capsule-btn:hover) .hb-2 { transform: translate(110%, -130%) scale(1); }
+  body:has(.capsule-btn:hover) .hb-3 { transform: translate(-50%, -150%) scale(1); }
+  body:has(.capsule-btn:hover) .hb-4 { transform: translate(-130%, 50%) scale(1); }
+  body:has(.capsule-btn:hover) .hb-5 { transform: translate(80%, 60%) scale(1); }
+  body:has(.capsule-btn:hover) .halo-blob { opacity: 0.55; transition-delay: 0s !important; transition-duration: 0.8s; transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  /* --- 主内容区域 (保持不变) --- */
+  .hero-container { position: relative; z-index: 10; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 20px; text-align: center; transition: opacity 0.3s ease, filter 0.3s ease; }
+  .content-wrapper { max-width: 800px; margin: 0 auto; }
+  .content-wrapper:has(.capsule-btn:hover) .dynamic-text { background-position: 0% 100%; }
+  .dynamic-text { color: transparent; -webkit-background-clip: text; background-clip: text; background-image: linear-gradient(to top, #0E7490 0%, #3B82F6 12.5%, #8B5CF6 25%, #EC4899 37.5%, #F97316 50%, #000000 50.1%, #000000 100%); background-size: 100% 200%; background-position: 0% 0%; transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease-out; }
+  h1.main-title { font-size: clamp(56px, 7vw, 96px); font-weight: 900; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.03em; opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
+  p.sub-title { font-size: clamp(20px, 3vw, 26px); font-weight: 600; margin-bottom: 64px; opacity: 0; animation: fadeUp 0.8s ease-out 0.2s forwards; }
+  .capsule-btn { position: relative; display: inline-block; padding: 22px 64px; border-radius: 9999px; font-size: 20px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; color: #ffffff; overflow: hidden; background-image: linear-gradient(to top, #0E7490 0%, #3B82F6 12.5%, #8B5CF6 25%, #EC4899 37.5%, #F97316 50%, #000000 50.1%, #000000 100%); background-size: 100% 200%; background-position: 0% 0%; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); opacity: 0; animation: fadeUp 0.8s ease-out 0.4s forwards; transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, transform 0.3s ease, opacity 0.8s ease-out; }
+  .capsule-btn:hover { background-position: 0% 100%; transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+  .bloom-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0; pointer-events: none; animation: bloomCycle 12s ease-in-out forwards; }
+  @keyframes bloomCycle { 0% { opacity: 0; transform: scale(0.8); } 40% { opacity: 0.35; transform: scale(1.2); } 100% { opacity: 0; transform: scale(1.1); } }
+
+
+  /* =========================================
+     【重构】登录弹窗样式 (参考 image_7/8.png)
+   ========================================= */
+  
+  /* 遮罩层 */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 150; display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+  }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+
+  /* 弹窗卡片主体 */
+  .login-modal-card {
+    background: #FFFFFF; width: 480px; padding: 40px;
+    border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    position: relative; text-align: center;
+    transform: translateY(30px) scale(0.95); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .modal-overlay.active .login-modal-card { transform: translateY(0) scale(1); opacity: 1; }
+
+  /* 关闭按钮 */
+  .close-btn-icon { position: absolute; top: 24px; right: 24px; width: 24px; height: 24px; cursor: pointer; color: #666; transition: color 0.2s; }
+  .close-btn-icon:hover { color: #000; }
+
+  /* 头部信息 */
+  .modal-logo { height: 40px; width: auto; margin-bottom: 24px; }
+  .modal-title { font-size: 28px; font-weight: 800; color: #111; margin-bottom: 8px; }
+  
+  /* 第一步的副标题 */
+  .step1-subtitle { font-size: 15px; color: #666; margin-bottom: 32px; font-weight: 500; }
+
+  /* 第二步的副标题 (参考图风格：左对齐，黑色) */
+  .step2-subtitle { font-size: 16px; color: #111; margin-bottom: 24px; font-weight: 600; text-align: left; }
+  
+  /* 输入框标签 */
+  .input-label { display: block; text-align: left; font-size: 14px; font-weight: 600; color: #111; margin-bottom: 8px; }
+
+  /* 通用输入框 */
+  .modal-input {
+    width: 100%; height: 52px; padding: 0 16px;
+    border: 1px solid #e5e7eb; border-radius: 12px;
+    font-size: 16px; color: #111; outline: none; transition: border-color 0.2s; margin-bottom: 24px;
+  }
+  .modal-input:focus { border-color: #000; }
+  .modal-input::placeholder { color: #9ca3af; }
+
+  /* 第三方登录按钮 */
+  .social-btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; height: 52px; margin-bottom: 12px;
+    border: 1px solid #e5e7eb; border-radius: 12px; background: #f9fafb; font-size: 16px; font-weight: 600; color: #111; cursor: pointer; transition: all 0.2s;
+  }
+  .social-btn:hover { background: #f3f4f6; border-color: #d1d5db; }
+  .social-icon { width: 24px; height: 24px; margin-right: 12px; }
+
+  /* 分隔符 */
+  .separator { display: flex; align-items: center; color: #9ca3af; font-size: 14px; margin: 24px 0; font-weight: 500; }
+  .separator::before, .separator::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+  .separator::before { margin-right: 16px; }
+  .separator::after { margin-left: 16px; }
+
+  /* 继续按钮 (黑色风格) */
+  .continue-btn {
+    width: 100%; height: 52px; background: #f3f4f6; color: #9ca3af; font-size: 16px; font-weight: 700; border: none; border-radius: 12px; cursor: not-allowed; margin-bottom: 24px; transition: all 0.2s;
+  }
+  .continue-btn.active { background: #000000; color: #ffffff; cursor: pointer; } /* 激活时变黑 */
+  .continue-btn:hover.active { opacity: 0.9; }
+
+  /* 底部条款 */
+  .footer-terms { font-size: 12px; color: #9ca3af; line-height: 1.5; }
+  .footer-terms a { color: #111; text-decoration: none; font-weight: 600; }
+  .close-area-trigger { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+  /* 加载动画 */
+  .loading-spinner { display: none; width: 20px; height: 20px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#" class="logo-container"><img src="logo.png" alt="WhiteMirror Logo"></a>
+  <button class="user-action-btn" id="userBtn" aria-label="Login">
+    <svg class="user-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+  </button>
+</header>
+
+<div id="smart-bloom-bg-layer"></div>
+<div id="center-halo-layer"><div class="halo-blob hb-1"></div><div class="halo-blob hb-2"></div><div class="halo-blob hb-3"></div><div class="halo-blob hb-4"></div><div class="halo-blob hb-5"></div></div>
+<main class="hero-container" id="heroMain">
+  <div class="content-wrapper">
+    <h1 class="main-title dynamic-text">MirrorPost AI</h1>
+    <p class="sub-title dynamic-text">专注你的每一个灵感瞬间</p>
+    <button class="capsule-btn" onclick="window.location.href='SaaS.html'">实现创想</button>
+  </div>
+</main>
+
+
+<div class="modal-overlay" id="loginModal">
+  <div class="close-area-trigger" onclick="toggleLogin()"></div>
+  
+  <div class="login-modal-card">
+    <svg class="close-btn-icon" onclick="toggleLogin()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    
+    <img src="logo.png" alt="WhiteMirror" class="modal-logo">
+    <h2 class="modal-title" id="modalTitle">欢迎回到WhiteMirror</h2>
+
+    <form id="authForm" onsubmit="handleAuth(event)">
+      
+      <div id="step1Container">
+        <p class="step1-subtitle">登录或注册以继续</p>
+        <button type="button" class="social-btn google"><svg class="social-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>使用Google</button>
+        <button type="button" class="social-btn apple"><svg class="social-icon" viewBox="0 0 24 24" fill="#000"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.08 2.31-.84 3.23-.8 1.43.12 2.63.76 3.53 1.86-2.67 1.68-2.16 5.85.41 7.09-.59 1.73-1.31 3.25-2.25 4.02zM12.06 7.2c-.12-2.34 1.91-4.35 4.08-4.39.19 2.58-2.16 4.57-4.08 4.39z"/></svg>使用Apple</button>
+        <div class="separator">或</div>
+        <input type="email" id="emailInput" class="modal-input" placeholder="电子邮箱" required>
+      </div>
+
+      <div id="step2Container" style="display: none;">
+        <p class="step2-subtitle" id="emailDisplaySubtitle"></p>
+        
+        <label class="input-label">密码</label>
+        <input type="password" id="passwordInput" class="modal-input" placeholder="输入密码">
+      </div>
+
+      <button type="submit" class="continue-btn" id="submitBtn">
+        <span id="btnText">使用邮箱继续</span>
+        <div class="loading-spinner" id="btnSpinner"></div>
+      </button>
+
+    </form>
+
+    <p class="footer-terms">继续即表示您同意 <a href="#">使用条款</a> 和 <a href="#">隐私政策</a></p>
+  </div>
+</div>
+
+
+<script>
+  // --- 原有JS保持不变 ---
+  document.addEventListener('DOMContentLoaded', () => { const btn = document.querySelector('.capsule-btn'); const blobs = document.querySelectorAll('.halo-blob'); const zones = [{ xMin: -160, xMax: -100, yMin: -150, yMax: -100 }, { xMin: 80, xMax: 140, yMin: -160, yMax: -110 }, { xMin: -80, xMax: 20, yMin: -180, yMax: -140 }, { xMin: -160, xMax: -110, yMin: 40, yMax: 100 }, { xMin: 60, xMax: 120, yMin: 50, yMax: 110 }]; function getRandom(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; } btn.addEventListener('mouseenter', () => { blobs.forEach((blob, index) => { const zone = zones[index]; const randX = getRandom(zone.xMin, zone.xMax); const randY = getRandom(zone.yMin, zone.yMax); blob.style.setProperty('--target-x', `${randX}%`); blob.style.setProperty('--target-y', `${randY}%`); }); }); const bgContainer = document.getElementById('smart-bloom-bg-layer'); const allColors = ['#A5F3FC', '#F9A8D4', '#FDBA74', '#6EE7B7', '#93C5FD', '#C4B5FD']; let recentColors = []; function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; } function createBlob(isInitial = false) { const availableColors = allColors.filter(color => !recentColors.includes(color)); let selectedColor = availableColors.length > 0 ? availableColors[getRandomInt(0, availableColors.length - 1)] : allColors[getRandomInt(0, allColors.length - 1)]; recentColors.push(selectedColor); if (recentColors.length > 3) recentColors.shift(); const blob = document.createElement('div'); blob.classList.add('bloom-blob'); blob.style.backgroundColor = selectedColor; const size = getRandomInt(400, 600); blob.style.width = `${size}px`; blob.style.height = `${size}px`; const randomTop = getRandomInt(-20, 80); const randomLeft = getRandomInt(-20, 80); blob.style.top = `${randomTop}%`; blob.style.left = `${randomLeft}%`; if (isInitial) { blob.style.animationDuration = '10s'; blob.style.animationDelay = '-2s'; } bgContainer.appendChild(blob); setTimeout(() => { blob.remove(); }, 12500); } createBlob(true); setTimeout(() => createBlob(true), 200); setTimeout(() => createBlob(true), 400); setTimeout(() => { setInterval(createBlob, 3000); }, 2000); });
+
+  // --- 登录弹窗逻辑 (更新版) ---
+  const userBtn = document.getElementById('userBtn');
+  const loginModal = document.getElementById('loginModal');
+  const heroMain = document.getElementById('heroMain');
+  
+  const step1Container = document.getElementById('step1Container');
+  const step2Container = document.getElementById('step2Container');
+  const modalTitle = document.getElementById('modalTitle');
+  const emailDisplaySubtitle = document.getElementById('emailDisplaySubtitle');
+
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const btnSpinner = document.getElementById('btnSpinner');
+
+  let currentStep = 'email'; // 'email', 'login', 'signup'
+
+  function toggleLogin() {
+    loginModal.classList.toggle('active');
+    if (loginModal.classList.contains('active')) {
+      heroMain.style.opacity = '0.4'; heroMain.style.filter = 'blur(8px)';
+      resetStep();
+    } else {
+      heroMain.style.opacity = '1'; heroMain.style.filter = 'none';
+    }
+  }
+  userBtn.addEventListener('click', toggleLogin);
+
+  // 输入监听：控制按钮激活
+  emailInput.addEventListener('input', checkInput);
+  passwordInput.addEventListener('input', checkInput);
+
+  function checkInput() {
+    let isValid = false;
+    if (currentStep === 'email') {
+      isValid = emailInput.value.includes('@') && emailInput.value.includes('.');
+    } else {
+      isValid = passwordInput.value.length >= 1; // 简单判断有输入即可
+    }
+    if (isValid) {
+      submitBtn.classList.add('active');
+    } else {
+      submitBtn.classList.remove('active');
+    }
+  }
+
+  // 核心逻辑：处理点击“继续”
+  function handleAuth(e) {
+    e.preventDefault();
+    if (!submitBtn.classList.contains('active')) return;
+
+    if (currentStep === 'email') {
+      simulateLoading(() => {
+        const email = emailInput.value;
+        const registeredUsers = JSON.parse(localStorage.getItem('wm_users') || '{}');
+        if (registeredUsers[email]) {
+          toLoginMode(email);
+        } else {
+          toSignupMode(email);
+        }
+      });
+    } else {
+      simulateLoading(() => {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        if (currentStep === 'login') {
+          const users = JSON.parse(localStorage.getItem('wm_users') || '{}');
+          if (users[email] === password) {
+            window.location.href = 'SaaS.html';
+          } else {
+            alert("密码错误 (演示环境：请输入您刚才注册时的密码)");
+          }
+        } else if (currentStep === 'signup') {
+          const users = JSON.parse(localStorage.getItem('wm_users') || '{}');
+          users[email] = password;
+          localStorage.setItem('wm_users', JSON.stringify(users));
+          window.location.href = 'SaaS.html';
+        }
+      });
+    }
+  }
+
+  function simulateLoading(callback) {
+    btnText.style.display = 'none'; btnSpinner.style.display = 'block'; submitBtn.disabled = true;
+    setTimeout(() => {
+      btnText.style.display = 'block'; btnSpinner.style.display = 'none'; submitBtn.disabled = false;
+      callback();
+    }, 600);
+  }
+
+  // 切换到登录模式 (参考图2)
+  function toLoginMode(email) {
+    currentStep = 'login';
+    modalTitle.innerText = '欢迎回来';
+    step1Container.style.display = 'none';
+    step2Container.style.display = 'block';
+    emailDisplaySubtitle.innerText = `登录账号：${email}`; // 参考图风格
+    btnText.innerText = '登录';
+    passwordInput.value = ''; 
+    submitBtn.classList.remove('active'); // 重置按钮状态
+    passwordInput.focus();
+  }
+
+  // 切换到注册模式 (参考图1)
+  function toSignupMode(email) {
+    currentStep = 'signup';
+    modalTitle.innerText = '创建账号';
+    step1Container.style.display = 'none';
+    step2Container.style.display = 'block';
+    emailDisplaySubtitle.innerText = `为您创建账号：${email}`; // 参考图风格
+    btnText.innerText = '创建账号';
+    passwordInput.value = '';
+    submitBtn.classList.remove('active');
+    passwordInput.focus();
+  }
+
+  // 重置回第一步
+  function resetStep() {
+    currentStep = 'email';
+    modalTitle.innerText = '欢迎回到WhiteMirror';
+    step1Container.style.display = 'block';
+    step2Container.style.display = 'none';
+    emailInput.value = '';
+    btnText.innerText = '使用邮箱继续';
+    submitBtn.classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
