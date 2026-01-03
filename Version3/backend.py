@@ -23,8 +23,9 @@ def generate_posters(
     style_prompt: Optional[str] = None,
     logo_image: Optional[Image.Image] = None,
     qrcode_image: Optional[Image.Image] = None,
-    slogan: Optional[str] = None
-) -> List[Image.Image]:
+    slogan: Optional[str] = None,
+    combo_images: Optional[List[Image.Image]] = None
+) -> tuple[List[Image.Image], Optional[str]]:
     """
     批量生成海报，支持多种模式
 
@@ -52,7 +53,7 @@ def generate_posters(
     # 构建提示词
     enhanced_prompt = _build_prompt(
         user_prompt, thinking_mode, style_prompt, reference_image,
-        logo_image, qrcode_image, slogan
+        logo_image, qrcode_image, slogan, combo_images
     )
 
     # 配置模型参数
@@ -65,6 +66,8 @@ def generate_posters(
 
     # 批量生成
     generated_images = []
+    error_reasons = []  # 记录所有错误原因
+
     for i in range(num_images):
         print(f"正在生成第 {i+1}/{num_images} 张海报...")
 
@@ -83,6 +86,11 @@ def generate_posters(
             # 添加二维码
             if qrcode_image:
                 contents.append(qrcode_image)
+
+            # 添加品牌组合中的图片
+            if combo_images:
+                for img in combo_images:
+                    contents.append(img)
 
             # 如果只有文本，不用列表
             if len(contents) == 1:
@@ -103,16 +111,39 @@ def generate_posters(
                 _save_image(image, i)
             else:
                 print(f"警告: 第 {i+1} 张海报生成失败，跳过")
+                error_reasons.append("内容安全过滤")
 
         except Exception as e:
+            error_msg = str(e).lower()
             print(f"生成第 {i+1} 张时出错: {str(e)}")
+
+            # 分类错误原因
+            if "timeout" in error_msg or "timed out" in error_msg:
+                error_reasons.append("生成超时")
+            elif "quota" in error_msg or "rate limit" in error_msg:
+                error_reasons.append("API配额不足")
+            elif "safety" in error_msg or "blocked" in error_msg or "filter" in error_msg:
+                error_reasons.append("内容安全过滤")
+            elif "network" in error_msg or "connection" in error_msg:
+                error_reasons.append("网络波动")
+            elif "server" in error_msg or "503" in error_msg or "500" in error_msg:
+                error_reasons.append("服务器繁忙")
+            else:
+                error_reasons.append("未知错误")
             continue
 
     if not generated_images:
         raise ValueError("所有海报生成均失败")
 
     print(f"成功生成 {len(generated_images)} 张海报")
-    return generated_images
+
+    # 确定主要错误原因（出现最多的那个）
+    primary_error = None
+    if error_reasons:
+        from collections import Counter
+        primary_error = Counter(error_reasons).most_common(1)[0][0]
+
+    return generated_images, primary_error
 
 
 def _build_prompt(
@@ -122,7 +153,8 @@ def _build_prompt(
     reference_image: Optional[Image.Image],
     logo_image: Optional[Image.Image],
     qrcode_image: Optional[Image.Image],
-    slogan: Optional[str]
+    slogan: Optional[str],
+    combo_images: Optional[List[Image.Image]]
 ) -> str:
     """构建完整的提示词"""
     prompt_parts = []
@@ -156,6 +188,8 @@ def _build_prompt(
         asset_requirements.append("include a QR code (typically bottom corner)")
     if slogan:
         asset_requirements.append(f"include slogan text: '{slogan}'")
+    if combo_images:
+        asset_requirements.append(f"include all {len(combo_images)} provided brand assets in appropriate positions")
 
     if asset_requirements:
         prompt_parts.append("Asset requirements: " + ", ".join(asset_requirements))

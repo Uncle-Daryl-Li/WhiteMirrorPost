@@ -63,7 +63,7 @@ python --version
    notepad .env
 
    # 写入以下内容（替换为你的实际Key）
-   GOOGLE_API_KEY=AIzaSyBeBxWmr0rXIH1DcuT1PAJ7YKCqyIOJbGY
+   GOOGLE_API_KEY=你的实际API_Key
    ```
 
 ### ⚡ 步骤3：启动项目

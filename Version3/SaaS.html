@@ -34,99 +34,34 @@
   }
 
   /* =========================================
-     【极光系统】
-   ========================================= */
+      【极光系统】
+     ========================================= */
   .aurora-container {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 480px;
-    z-index: 0; pointer-events: none;
-    opacity: 0.9; filter: blur(60px);
-    transform-origin: center top;
-    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: absolute; top: 0; left: 0; width: 100%; height: 480px;
+    z-index: 0; pointer-events: none; opacity: 0.9; filter: blur(60px);
+    transform-origin: center top; transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex; justify-content: center;
   }
-
   .aurora-lights {
     width: 100%; height: 100%;
-    /* 粉紫在上，青绿在中(覆盖标题)，底部透明 */
-    background: linear-gradient(to bottom,
-      rgba(236, 72, 153, 0.6) 0%,
-      rgba(167, 139, 250, 0.5) 20%,
-      rgba(34, 211, 238, 0.55) 40%,
-      rgba(34, 211, 238, 0.3) 75%,
-      transparent 100%);
-    background-size: 100% 150%;
-    border-radius: 0 0 20% 20% / 0 0 10% 10%;
+    background: linear-gradient(to bottom, rgba(236, 72, 153, 0.6) 0%, rgba(167, 139, 250, 0.5) 20%, rgba(34, 211, 238, 0.55) 40%, rgba(34, 211, 238, 0.3) 75%, transparent 100%);
+    background-size: 100% 150%; border-radius: 0 0 20% 20% / 0 0 10% 10%;
     animation: aurora-flow 10s infinite ease-in-out alternate;
   }
-
-  @keyframes aurora-flow {
-    0% { background-position: 50% 0%; }
-    100% { background-position: 50% 20%; }
-  }
-
-  /* 交互状态 */
+  @keyframes aurora-flow { 0% { background-position: 50% 0%; } 100% { background-position: 50% 20%; } }
   .aurora-container.wave-active { opacity: 1; transform: translateY(20px); }
   .aurora-container.wave-active .aurora-lights { animation: liquid-morph 4s infinite ease-in-out; }
-
   @keyframes liquid-morph {
     0% { border-radius: 0 0 20% 20% / 0 0 10% 10%; transform: scaleY(1); }
-    25% { border-radius: 0 0 30% 70% / 0 0 20% 15%; transform: scaleY(1.1); }
     50% { border-radius: 0 0 50% 50% / 0 0 30% 30%; transform: scaleY(1.15) translateY(10px); }
-    75% { border-radius: 0 0 70% 30% / 0 0 15% 20%; transform: scaleY(1.1); }
     100% { border-radius: 0 0 20% 20% / 0 0 10% 10%; transform: scaleY(1); }
   }
-
-  /* 入场动画：针对绝对定位居中元素（用于大标题） */
-  @keyframes slideUpFadeInCentered {
-    0% {
-      opacity: 0;
-      /* 保持水平居中，垂直方向从下方40px处开始 */
-      transform: translate(-50%, calc(-50% + 40px));
-      filter: blur(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-      filter: blur(0);
-    }
-  }
-
-  /* 入场动画：针对普通文档流元素（用于输入框） */
-  @keyframes slideUpFadeInNormal {
-    0% {
-      opacity: 0;
-      transform: translateY(40px);
-      filter: blur(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
-  /* 退场动画：旧标题缩小吸入输入框（修复动画冲突的关键） */
-  @keyframes fadeOutDownToInput {
-    from {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    to {
-      opacity: 0;
-      transform: translate(-50%, 150%) scale(0.2);
-    }
-  }
-
   .aurora-container.absorbed {
-    top: 50%; width: 100%; left: 0;
-    transform: translateY(-50%) scale(0.1);
-    filter: blur(100px); opacity: 0;
-    transform-origin: center center;
+    top: 50%; width: 100%; left: 0; transform: translateY(-50%) scale(0.1); filter: blur(100px); opacity: 0; transform-origin: center center;
     transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
   }
 
-  /* --- 左侧侧边栏 (保持不变) --- */
+  /* --- Sidebar --- */
   .sidebar { width: var(--sidebar-width); background-color: #FFFFFF; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; z-index: 20; height: 100%; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
   .sidebar-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .app-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; overflow: hidden; white-space: nowrap; }
@@ -142,6 +77,7 @@
   .user-info { overflow: hidden; white-space: nowrap; transition: opacity 0.2s; }
   .user-info h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin: 0; }
   .user-info p { font-size: 12px; color: var(--text-secondary); margin: 2px 0 0 0; }
+
   details.settings-card { background: transparent; border: none; border-radius: 12px; margin-bottom: 8px; overflow: hidden; transition: all 0.2s ease; }
   details.settings-card[open] .card-content { background: #fff; border: 1px solid var(--border-color); border-radius: 12px; margin-top: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); animation: slideDown 0.2s ease-out; }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -155,6 +91,31 @@
   summary:hover .arrow-icon { opacity: 1; }
   details[open] summary .arrow-icon { transform: rotate(90deg); opacity: 1; }
   .card-content { padding: 16px; }
+
+  /* --- 历史对话列表样式 --- */
+  .history-list { list-style: none; padding: 0; margin: 0; }
+  .history-item {
+    padding: 10px 12px; margin-bottom: 4px; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s; font-size: 13px; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap; overflow: hidden; position: relative;
+  }
+  .history-item:hover { background-color: var(--hover-bg); color: var(--text-primary); }
+  .history-item.active { background-color: #EFF6FF; color: var(--primary-blue); font-weight: 500; }
+  .history-icon { width: 14px; height: 14px; flex-shrink: 0; }
+  .history-text { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+
+  /* 删除按钮 */
+  .delete-session-btn {
+    width: 20px; height: 20px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: #9CA3AF; background: transparent; border: none;
+    opacity: 0; transition: all 0.2s; cursor: pointer;
+  }
+  .delete-session-btn:hover { background: #fee2e2; color: #ef4444; }
+  .history-item:hover .delete-session-btn { opacity: 1; }
+
+  /* Sidebar collapsed */
   body.sidebar-collapsed .sidebar { width: var(--sidebar-collapsed-width); }
   body.sidebar-collapsed .sidebar-header { flex-direction: column; gap: 16px; padding: 20px 0; }
   body.sidebar-collapsed .app-logo span { display: none; }
@@ -166,10 +127,25 @@
   body.sidebar-collapsed .card-content { display: none; }
   body.sidebar-collapsed .user-info { display: none; }
   body.sidebar-collapsed .user-profile { justify-content: center; padding: 20px 0; }
-  .control-group { margin-bottom: 16px; } .label-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 500; color: var(--text-secondary); } .select-wrapper { position: relative; } .modern-select { width: 100%; appearance: none; padding: 10px 12px 10px 36px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; color: var(--text-primary); background: #fff; outline: none; cursor: pointer; transition: border 0.2s; } .modern-select:focus { border-color: var(--primary-blue); } .select-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-secondary); pointer-events: none; } .select-arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; color: var(--text-secondary); pointer-events: none; } .slider-container { width: 100%; } .slider-range { -webkit-appearance: none; width: 100%; height: 6px; background: #E5E7EB; border-radius: 99px; outline: none; background-image: linear-gradient(var(--primary-blue), var(--primary-blue)); background-size: 0% 100%; background-repeat: no-repeat; cursor: pointer; } .slider-range::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #fff; border: 2px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.1s; } .slider-range:active::-webkit-slider-thumb { transform: scale(1.2); } .slider-labels { display: flex; justify-content: space-between; font-size: 10px; color: #9CA3AF; margin-top: 6px; } .dropzone { border: 1px dashed #D1D5DB; border-radius: 8px; padding: 16px; text-align: center; transition: all 0.2s; cursor: pointer; margin-bottom: 12px; background: #F9FAFB; } .dropzone:hover { border-color: var(--primary-blue); background: #EFF6FF; } .dz-icon { color: var(--text-secondary); margin-bottom: 4px; } .dz-text { font-size: 12px; color: var(--text-secondary); } .dz-btn { font-size: 10px; padding: 4px 8px; border: 1px solid #E5E7EB; background: #fff; border-radius: 4px; margin-top: 8px; display: inline-block; } .checkbox-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; } .custom-checkbox { accent-color: var(--primary-blue); } .checkbox-label { font-size: 12px; color: var(--text-secondary); } .manage-link { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 8px; font-size: 12px; color: var(--primary-blue); font-weight: 600; background: #EFF6FF; border-radius: 6px; text-decoration: none; transition: background 0.2s; } .manage-link:hover { background: #DBEAFE; } .negative-input { width: 100%; height: 80px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 12px; resize: none; outline: none; background: #F9FAFB; } .negative-input:focus { border-color: var(--primary-blue); background: #fff; } .model-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 4px solid var(--primary-blue); border-radius: 6px; margin-bottom: 16px; } .model-icon { width: 32px; height: 32px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; } .model-info h4 { font-size: 13px; font-weight: 700; color: #1E3A8A; } .model-info p { font-size: 10px; color: #3B82F6; margin-top: 2px; } .toggle-wrapper { display: flex; justify-content: space-between; align-items: center; } .toggle-label { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; } .help-icon { width: 14px; height: 14px; color: #9CA3AF; cursor: help; } .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; } .toggle-switch input { opacity: 0; width: 0; height: 0; } .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #E5E7EB; border-radius: 34px; transition: .4s; } .slider-round:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .4s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); } input:checked + .slider-round { background-color: var(--primary-blue); } input:checked + .slider-round:before { transform: translateX(16px); }
+
+  /* Controls */
+  .control-group { margin-bottom: 16px; } .label-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 500; color: var(--text-secondary); } .select-wrapper { position: relative; } .modern-select { width: 100%; appearance: none; padding: 10px 12px 10px 36px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; color: var(--text-primary); background: #fff; outline: none; cursor: pointer; transition: border 0.2s; } .modern-select:focus { border-color: var(--primary-blue); } .select-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-secondary); pointer-events: none; } .select-arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; color: var(--text-secondary); pointer-events: none; } .slider-container { width: 100%; } .slider-range { -webkit-appearance: none; width: 100%; height: 6px; background: #E5E7EB; border-radius: 99px; outline: none; background-image: linear-gradient(var(--primary-blue), var(--primary-blue)); background-size: 0% 100%; background-repeat: no-repeat; cursor: pointer; } .slider-range::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #fff; border: 2px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.1s; } .slider-range:active::-webkit-slider-thumb { transform: scale(1.2); } .slider-labels { display: flex; justify-content: space-between; font-size: 10px; color: #9CA3AF; margin-top: 6px; } .dropzone { border: 1px dashed #D1D5DB; border-radius: 8px; padding: 16px; text-align: center; transition: all 0.2s; cursor: pointer; margin-bottom: 12px; background: #F9FAFB; position: relative; min-height: 100px; display: flex; align-items: center; justify-content: center; } .dropzone:hover { border-color: var(--primary-blue); background: #EFF6FF; } .dz-icon { color: var(--text-secondary); margin-bottom: 4px; } .dz-text { font-size: 12px; color: var(--text-secondary); } .dz-btn { font-size: 10px; padding: 4px 8px; border: 1px solid #E5E7EB; background: #fff; border-radius: 4px; margin-top: 8px; display: inline-block; }
+  .dropzone-content { display: flex; flex-direction: column; align-items: center; }
+  .dropzone.has-image .dropzone-content { display: none; }
+  .dropzone-thumbnail { display: none; width: 100%; height: 100%; object-fit: contain; border-radius: 4px; max-height: 80px; }
+  .dropzone.has-image { border: 1px solid var(--primary-blue); background: #EFF6FF; }
+  .dropzone.has-image .dropzone-thumbnail { display: block; }
+  .dropzone-remove { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0, 0, 0, 0.6); color: white; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; }
+  .dropzone.has-image .dropzone-remove { display: flex; }
+  .dropzone-remove:hover { background: rgba(220, 38, 38, 0.9); }
+  .checkbox-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; } .custom-checkbox { accent-color: var(--primary-blue); } .checkbox-label { font-size: 12px; color: var(--text-secondary); } .manage-link { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 8px; font-size: 12px; color: var(--primary-blue); font-weight: 600; background: #EFF6FF; border-radius: 6px; text-decoration: none; transition: background 0.2s; } .manage-link:hover { background: #DBEAFE; } .negative-input { width: 100%; height: 80px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 12px; resize: none; outline: none; background: #F9FAFB; } .negative-input:focus { border-color: var(--primary-blue); background: #fff; } .model-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 4px solid var(--primary-blue); border-radius: 6px; margin-bottom: 16px; } .model-icon { width: 32px; height: 32px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; } .model-info h4 { font-size: 13px; font-weight: 700; color: #1E3A8A; } .model-info p { font-size: 10px; color: #3B82F6; margin-top: 2px; } .toggle-wrapper { display: flex; justify-content: space-between; align-items: center; } .toggle-label { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; } .help-icon { width: 14px; height: 14px; color: #9CA3AF; cursor: help; } .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; } .toggle-switch input { opacity: 0; width: 0; height: 0; } .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #E5E7EB; border-radius: 34px; transition: .4s; } .slider-round:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: .4s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); } input:checked + .slider-round { background-color: var(--primary-blue); } input:checked + .slider-round:before { transform: translateX(16px); }
 
   /* 右侧主内容 */
-  .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow-y: auto; justify-content: center; z-index: 10; }
+  .main-content {
+    flex: 1; display: flex; flex-direction: column; position: relative;
+    overflow-y: auto; overflow-x: hidden;
+    justify-content: center; z-index: 10;
+  }
 
   /* 标题容器 */
   .workspace-header {
@@ -179,173 +155,95 @@
     flex-shrink: 0;
   }
 
-  /* ==================================================
-     【核心修复区】 标题动画逻辑 (Animation Fix)
-     ================================================== */
-
-  /* 1. 初始标题样式 */
+  /* 1. 初始标题 */
   #mainTitle {
     font-size: 36px; font-weight: 900; color: #000; text-align: center;
-    position: absolute; top: 50%; left: 50%;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     z-index: 1; white-space: nowrap;
-
-    /* 初始不可见，执行【入场动画】 */
-    opacity: 0;
-    animation: slideUpFadeInCentered 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+    opacity: 0; animation: slideUpFadeInCentered 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
   }
+  #mainTitle.fade-in-input { animation: fadeOutDownToInput 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
 
-  /* 2. 点击后：被 JS 添加 .fade-in-input 类时的样式 */
-  /* 使用高优先级选择器，强制覆盖入场动画 */
-  #mainTitle.fade-in-input {
-    /* 执行【退场动画】 */
-    animation: fadeOutDownToInput 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-  }
-
-  /* 3. 新标题样式 */
+  /* 2. 新标题与副标题 */
   #newTitle {
-    position: absolute;
-    top: 50%; left: 50%;
+    position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, 150%) scale(0.2); opacity: 0;
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
-    clip-path: inset(0);
-    white-space: nowrap;
-    will-change: transform, opacity;
+    z-index: 2; clip-path: inset(0); white-space: nowrap; will-change: transform, opacity;
   }
   #newTitle.pop-out { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-
-  /* 新标题文字内容 */
   #newTitle .text-content {
-    display: inline-block;
-    font-size: 36px; font-weight: 900;
+    display: inline-block; font-size: 36px; font-weight: 900;
+    background-image: linear-gradient(to right, #2563EB, #7C3AED, #DB2777);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  /* 渐变文字通用类 */
+  .gradient-text {
     background-image: linear-gradient(to right, #2563EB, #7C3AED, #DB2777);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
 
-  /* 副标题容器 - "海报正在生成中..." */
   #loadingSubtext {
-    position: absolute;
-    top: calc(50% + 35px); left: 50%;
+    position: absolute; top: calc(50% + 35px); left: 50%;
     transform: translate(-50%, 20px); opacity: 0;
     transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-    z-index: 2; pointer-events: none;
-    clip-path: inset(0);
-    white-space: nowrap;
-    will-change: transform, opacity;
+    z-index: 2; pointer-events: none; clip-path: inset(0); white-space: nowrap; will-change: transform, opacity;
   }
   #loadingSubtext.show { opacity: 1; transform: translate(-50%, 0); }
+  #loadingSubtext .text-content { display: inline-block; font-size: 14px; font-weight: 500; color: #6B7280; letter-spacing: 1px; }
 
-  /* 副标题文字 */
-  #loadingSubtext .text-content {
-    display: inline-block;
-    font-size: 14px; font-weight: 500; color: #6B7280; letter-spacing: 1px;
-  }
+  /* 标题过渡动画类 */
+  .fade-out-down { animation: fadeOutDown 0.5s ease forwards; }
+  @keyframes fadeOutDown { to { opacity: 0; transform: translateY(20px); } }
+  .fade-in-up { animation: fadeInUpShort 0.5s ease forwards; }
+  @keyframes fadeInUpShort { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* --- 扫描光效 --- */
+  /* 扫描光效 */
   .scan-effect { overflow: hidden; }
-
   .scan-effect::after {
-    content: ''; position: absolute;
-    top: 0; left: -100%; width: 60%; height: 100%;
+    content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
     background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%);
-    transform: skewX(-20deg);
-    animation: scan-move 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    transform: skewX(-20deg); animation: scan-move 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
     pointer-events: none; mix-blend-mode: overlay;
   }
-
   .scan-effect .text-content { animation: scan-shrink 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite; }
-
   @keyframes scan-move { 0% { left: -100%; } 100% { left: 200%; } }
   @keyframes scan-shrink { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.95); } }
 
-  /* ================================================== */
-
-  /* 创作区域（输入框） */
-  .creation-area {
-    max-width: 800px; margin: 20px auto; width: 90%;
-    text-align: center; position: relative; z-index: 2;
-    transition: all 0.5s ease; /* 整体淡出 */
-  }
+  /* --- 创作区域 --- */
+  .creation-area { max-width: 800px; margin: 20px auto; width: 90%; text-align: center; position: relative; z-index: 2; transition: all 0.5s ease; }
   .creation-area.fade-out { opacity: 0; transform: scale(0.95); pointer-events: none; }
 
-  /* 霓虹旋转 */
+  /* --- 霓虹旋转 --- */
   .magic-input-box-wrapper {
-    position: relative;
-    width: 100%;
+    position: relative; width: 100%;
+    background: transparent;
     border: 1px solid #E5E7EB; border-radius: 24px; padding: 16px 24px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    display: flex; flex-direction: column;
-    z-index: 5;
-    overflow: visible; /* 允许 popover 菜单显示在容器外 */
-    background: transparent; /* 改为透明，让底层霓虹光可以透过来 */
-
-    /* 初始不可见，执行入场动画（比标题晚 0.2s） */
-    opacity: 0;
-    animation: slideUpFadeInNormal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
-
+    display: flex; flex-direction: column; z-index: 5; overflow: visible;
+    opacity: 0; animation: slideUpFadeInNormal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
     transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
   }
-
   .magic-input-box-wrapper:focus-within { border-color: #3B82F6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
 
-  /* 霓虹光束 (伪元素) - 单条光束旋转 */
   .magic-input-box-wrapper::before {
-    content: '';
-    position: absolute;
-    inset: -3px; /* 比输入框大 3px */
-    background: conic-gradient(
-      from 0deg at 50% 50%,
-      transparent 0deg,
-      transparent 270deg,
-      #0E7490 290deg,
-      #8B5CF6 320deg,
-      #EC4899 340deg,
-      transparent 360deg
-    );
-    border-radius: 27px;
-    z-index: -2; /* 放在最底层 */
-    opacity: 0;
-    /* 过渡时间 0.8s，与新标题同步 */
-    transition: opacity 0.8s ease;
-    transform-origin: center center; /* 确保以自己的中心旋转 */
+    content: ''; position: absolute; inset: -3px;
+    background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 270deg, #0E7490 290deg, #8B5CF6 320deg, #EC4899 340deg, transparent 360deg);
+    border-radius: 27px; z-index: -2; opacity: 0; transition: opacity 0.8s ease;
   }
+  .magic-input-box-wrapper.neon-active::before { opacity: 1; animation: rotate-neon-border 2s linear infinite; }
+  @keyframes rotate-neon-border { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-  /* 白色遮罩层 - 内缩留出边缘缝隙，让霓虹光透出 */
   .magic-input-box-wrapper::after {
-    content: '';
-    position: absolute;
-    inset: 3px; /* 内缩3px，边缘留出缝隙 */
-    background: #FFFFFF;
-    border-radius: 21px; /* 适配内缩尺寸 (24px - 3px = 21px) */
-    z-index: -1; /* 在霓虹光之上，但在内容之下 */
+    content: ''; position: absolute; inset: 0; background: #FFFFFF; border-radius: 24px; z-index: -1;
   }
 
-  /* 激活状态 */
-  .magic-input-box-wrapper.neon-active::before {
-    opacity: 1;
-    animation: rotate-neon-border 2.5s linear infinite;
-  }
-
-  @keyframes rotate-neon-border {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .magic-textarea {
-    flex: 1; width: 100%; height: 28px; border: none; resize: none; outline: none;
-    font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6;
-    color: var(--text-primary); background: transparent; padding: 0; margin-bottom: 12px;
-  }
+  .magic-textarea { flex: 1; width: 100%; height: 28px; border: none; resize: none; outline: none; font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: var(--text-primary); background: transparent; padding: 0; margin-bottom: 12px; }
   .magic-textarea::placeholder { color: #9CA3AF; }
-
-  /* 底部操作栏 */
   .input-box-actions { display: flex; justify-content: space-between; align-items: center; }
-  .left-actions { display: flex; gap: 12px; /* Removed position: relative */ }
+  .left-actions { display: flex; gap: 12px; }
   .right-actions { display: flex; align-items: center; gap: 12px; }
-  .action-icon-btn, .pro-brain-btn, .generate-arrow-btn {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; transition: all 0.2s; position: relative;
-  }
+  .action-icon-btn, .pro-brain-btn, .generate-arrow-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer; transition: all 0.2s; position: relative; }
   .action-icon-btn, .pro-brain-btn { background: #F3F4F6; color: var(--icon-color); }
   .action-icon-btn:hover, .pro-brain-btn:hover { background: #E5E7EB; color: var(--text-primary); }
   .generate-arrow-btn { background: var(--text-primary); color: #FFFFFF; overflow: hidden; }
@@ -361,312 +259,708 @@
   .lightning-icon { transform: scale(0.5); opacity: 0; }
   .pro-brain-btn.show-lightning .brain-icon { transform: scale(0.5); opacity: 0; }
   .pro-brain-btn.show-lightning .lightning-icon { transform: scale(1); opacity: 1; }
-  /* Modified Popover Menu Styles - 显示在输入框下方 */
-  .popover-menu {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    top: calc(100% + 10px); /* Position below the input box */
-    left: 24px; /* Align with padding */
-    background: #FFFFFF;
-    border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding: 8px;
-    z-index: 20;
-    transform: translateY(-10px); /* Start slightly above */
-    transition: all 0.2s ease-out;
-    min-width: 200px;
-  }
-  .popover-menu.active {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0); /* Animate to final position */
-  }
+
+  /* Popover Menu */
+  .popover-menu { visibility: hidden; opacity: 0; position: absolute; top: calc(100% + 10px); left: 24px; background: #FFFFFF; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); padding: 8px; z-index: 20; transform: translateY(-10px); transition: all 0.2s ease-out; min-width: 200px; }
+  .popover-menu.active { visibility: visible; opacity: 1; transform: translateY(0); }
   .popover-list { list-style: none; padding: 0; margin: 0; }
   .popover-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: var(--text-primary); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
   .popover-item:hover { background: var(--hover-bg); }
   .popover-icon { width: 20px; height: 20px; color: var(--icon-color); }
-  .tooltip {
-    visibility: hidden; width: max-content; background-color: #FFFFFF; color: #4B5563;
-    text-align: center; padding: 8px 12px; border-radius: 8px;
-    position: absolute; z-index: 10; bottom: calc(100% + 10px); left: 50%;
-    transform: translateX(-50%); opacity: 0; transition: opacity 0.2s;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); font-size: 14px; font-weight: 500; pointer-events: none;
-  }
+  .tooltip { visibility: hidden; width: max-content; background-color: #FFFFFF; color: #4B5563; text-align: center; padding: 8px 12px; border-radius: 8px; position: absolute; z-index: 10; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); font-size: 14px; font-weight: 500; pointer-events: none; }
   .action-icon-btn:hover .tooltip, .pro-brain-btn:hover .tooltip, .generate-arrow-btn:hover .tooltip { visibility: visible; opacity: 1; }
 
-  /* =========================================
-     【图片预览区域 (Image Preview)】
-   ========================================= */
-  .image-preview-container {
-    margin-bottom: 16px;
-    animation: slideDown 0.3s ease-out;
-  }
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .image-preview-card {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px solid var(--border-color);
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  .image-preview-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .remove-image-btn {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.7);
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s, background 0.2s;
-  }
-  .image-preview-card:hover .remove-image-btn {
-    opacity: 1;
-  }
-  .remove-image-btn:hover {
-    background: rgba(220, 38, 38, 0.9);
-  }
-  .image-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-    color: white;
-    font-size: 11px;
-    padding: 6px 8px 4px;
-    text-align: center;
-    font-weight: 500;
-  }
+  /* Image Preview */
+  .image-preview-container { margin-bottom: 16px; animation: slideDown 0.3s ease-out; }
+  .image-preview-card { position: relative; width: 120px; height: 120px; border-radius: 12px; overflow: hidden; border: 2px solid var(--border-color); background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+  .image-preview-card img { width: 100%; height: 100%; object-fit: cover; }
+  .remove-image-btn { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0, 0, 0, 0.7); border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s, background 0.2s; }
+  .image-preview-card:hover .remove-image-btn { opacity: 1; }
+  .remove-image-btn:hover { background: rgba(220, 38, 38, 0.9); }
+  .image-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent); color: white; font-size: 11px; padding: 6px 8px 4px; text-align: center; font-weight: 500; }
 
-  /* =========================================
-     【新增：结果展示区 (Results View)】
-   ========================================= */
-  .results-view {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 90%; max-width: 1000px;
-    display: none; /* 默认隐藏 */
-    flex-direction: column; align-items: center;
-    z-index: 20;
-  }
+  /* Results View */
+  .results-view { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 1000px; display: none; flex-direction: column; align-items: center; z-index: 20; }
   .results-view.active { display: flex; animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+  .results-header { text-align: center; margin-bottom: 32px; position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .results-header h2 { font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; transition: all 0.5s ease; }
+  .results-header p { font-size: 14px; color: var(--text-secondary); transition: all 0.5s ease; }
+  .results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-bottom: 32px; }
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translate(-50%, -40%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
-  }
-
-  .results-header { text-align: center; margin-bottom: 32px; }
-  .results-header h2 { font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-  .results-header p { font-size: 14px; color: var(--text-secondary); }
-
-  .results-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-bottom: 32px;
-  }
+  /* Result Card Update */
   .result-card {
     aspect-ratio: 2/3; background: #fff; border: 1px solid var(--border-color);
     border-radius: 12px; overflow: hidden; position: relative;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); transition: all 0.2s;
+    cursor: pointer;
   }
   .result-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-  /* 模拟图片占位 */
-  .result-placeholder {
-    width: 100%; height: 100%; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-    display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 12px;
-  }
+  .result-card.selected { border: 3px solid var(--primary-blue); transform: translateY(-4px); }
+  .result-card.selected .card-overlay .select-icon { background: var(--primary-blue); border-color: var(--primary-blue); color: white; }
 
-  .regenerate-bar {
-    display: flex; align-items: center; gap: 12px;
-    background: #fff; border: 1px solid var(--border-color);
-    padding: 8px 8px 8px 16px; border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  /* Card Overlay */
+  .card-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    display: flex; justify-content: flex-end; gap: 8px;
+    opacity: 0; transition: opacity 0.2s;
+    z-index: 10;
   }
-  .regen-input { border: none; outline: none; font-size: 14px; width: 300px; color: var(--text-primary); }
+  .result-card:hover .card-overlay, .result-card.selected .card-overlay { opacity: 1; }
+  .result-card img { position: relative; z-index: 1; }
+
+  /* Buttons inside card */
+  .card-action-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #1F2937; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .card-action-btn:hover { transform: scale(1.1); background: #fff; }
+  .select-icon { border: 2px solid #D1D5DB; color: transparent; }
+  .result-card:hover .select-icon { border-color: #9CA3AF; }
+
+  .result-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 12px; }
+
+  /* Regenerate Bar & Placeholder */
+  .regenerate-bar { position: relative; display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-color); padding: 8px 8px 8px 16px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+
+  /* 底部输入框霓虹效果 */
+  .regenerate-bar.neon-active { border-color: transparent; box-shadow: none; }
+  .regenerate-bar.neon-active::before {
+    content: ''; position: absolute; inset: -2px;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 270deg, #0E7490 290deg, #8B5CF6 320deg, #EC4899 340deg, transparent 360deg);
+    border-radius: 14px; z-index: -2; animation: rotate-neon-border 2s linear infinite;
+  }
+  .regenerate-bar.neon-active::after {
+    content: ''; position: absolute; inset: 0; background: #FFFFFF; border-radius: 12px; z-index: -1;
+  }
+  /* Input & Placeholder Styles */
+  .regen-input {
+    border: none; outline: none; font-size: 14px; width: 300px; color: var(--text-primary);
+    background: transparent; position: relative; z-index: 1;
+  }
+  /* 占位符颜色 */
+  .regen-input::placeholder { color: #9CA3AF; opacity: 1; }
+  /* 点击聚焦时占位符消失 */
+  .regen-input:focus::placeholder { color: transparent; }
   .regen-btn {
     background: var(--text-primary); color: #fff; border: none;
     padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s; position: relative; z-index: 1;
   }
   .regen-btn:hover { background: #000; }
   .back-btn {
     background: transparent; color: var(--text-secondary); border: none;
     padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    position: relative; z-index: 1;
   }
   .back-btn:hover { background: var(--hover-bg); color: var(--text-primary); }
+
+  /* Error Notification */
+  .error-notification {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: white; padding: 16px 40px 16px 20px; border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15); border: 1px solid #E5E7EB;
+      display: flex; align-items: center; gap: 12px; z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 14px; color: #374151;
+  }
+  .error-notification.active { transform: translateX(-50%) translateY(0); }
+  .close-notification {
+      position: absolute; top: 8px; right: 8px; border: none; background: transparent;
+      font-size: 18px; line-height: 1; cursor: pointer; color: #9CA3AF;
+  }
+  .close-notification:hover { color: #374151; }
+  .retry-link { cursor: pointer; color: #111; font-weight: 600; text-decoration: none; }
+  .retry-link:hover { color: #3B82F6; text-decoration: underline; }
+
+  /* Image Lightbox Modal */
+  .lightbox-modal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.95); z-index: 9999;
+    justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .lightbox-modal.active { display: flex; opacity: 1; }
+  .lightbox-content {
+    position: relative; max-width: 90%; max-height: 90%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lightbox-image {
+    max-width: 100%; max-height: 90vh;
+    object-fit: contain; border-radius: 8px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  .lightbox-close {
+    position: absolute; top: 20px; right: 20px;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+  }
+  .lightbox-prev { left: 20px; }
+  .lightbox-next { right: 20px; }
+
+  /* Custom Style Modal */
+  .custom-style-modal {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); z-index: 9999;
+    justify-content: center; align-items: center;
+  }
+  .custom-style-modal.active { display: flex; }
+  .modal-card {
+    background: white; border-radius: 16px; width: 400px;
+    padding: 32px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    position: relative;
+  }
+  .modal-close-btn {
+    position: absolute; top: 16px; right: 16px;
+    background: transparent; border: none;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close-btn:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+  }
+  .modal-title {
+    font-size: 20px; font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+  }
+  .modal-form {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .form-group {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .form-label {
+    font-size: 14px; font-weight: 600;
+    color: var(--text-primary);
+  }
+  .form-input, .form-textarea {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #F3F4F6;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: all 0.2s;
+  }
+  .form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .modal-confirm-btn {
+    padding: 12px 24px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .modal-confirm-btn:hover {
+    background: #2563EB;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  .modal-confirm-btn:active {
+    transform: translateY(0);
+  }
+
+  /* 动画关键帧 */
+  @keyframes slideUpFadeInCentered { 0% { opacity: 0; transform: translate(-50%, calc(-50% + 40px)); filter: blur(10px); } 100% { opacity: 1; transform: translate(-50%, -50%); filter: blur(0); } }
+  @keyframes slideUpFadeInNormal { 0% { opacity: 0; transform: translateY(40px); filter: blur(10px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+  @keyframes fadeOutDownToInput { from { opacity: 1; transform: translate(-50%, -50%) scale(1); } to { opacity: 0; transform: translate(-50%, 150%) scale(0.2); } }
+
+  /* Loading Dots Wave */
+  .wave-dots span {
+    display: inline-block; animation: wave-dot 1.4s infinite ease-in-out both; margin: 0 1px; font-weight: 800;
+  }
+  .wave-dots span:nth-child(1) { animation-delay: -0.32s; }
+  .wave-dots span:nth-child(2) { animation-delay: -0.16s; }
+  .wave-dots span:nth-child(3) { animation-delay: 0; }
+  @keyframes wave-dot {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+    40% { transform: scale(1.2); opacity: 1; color: #3B82F6; }
+  }
+
+  /* --- 历史对话视图 --- */
+  .history-view {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-color); z-index: 15;
+    display: none; flex-direction: column; overflow: hidden;
+  }
+  .history-view.active { display: flex; animation: fadeIn 0.3s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* --- 顶边栏 --- */
+  .history-header {
+    height: 72px; padding: 0 32px;
+    background: #FFFFFF; border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .history-header h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0; }
+
+  /* 返回按钮样式修改 */
+  .close-history-btn {
+    background: #111111; color: #FFFFFF;
+    border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .close-history-btn:hover { background: #333333; transform: translateY(-1px); }
+
+  /* 内容区域 - 滚轮限制在内容区 */
+  .session-container {
+    flex: 1; overflow-y: auto;
+    padding: 40px;
+    display: flex; flex-direction: column; gap: 32px;
+    max-width: 900px; margin: 0 auto; width: 100%;
+  }
+  /* 滚轮样式优化（Webkit） */
+  .session-container::-webkit-scrollbar { width: 8px; }
+  .session-container::-webkit-scrollbar-track { background: transparent; }
+  .session-container::-webkit-scrollbar-thumb { background-color: #D1D5DB; border-radius: 4px; }
+  .session-container::-webkit-scrollbar-thumb:hover { background-color: #9CA3AF; }
+
+  .turn-block { display: flex; flex-direction: column; gap: 16px; }
+
+  /* 提示词气泡修改 */
+  .user-prompt-bubble {
+    align-self: flex-start; /* 左对齐 */
+    background: #F3F4F6; /* 灰底 */
+    color: #111111; /* 黑字 */
+    padding: 12px 16px; border-radius: 12px;
+    font-size: 14px; max-width: 80%;
+    font-weight: 500;
+  }
+
+  .ai-response-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;
+    align-self: flex-start; width: 100%;
+  }
+  .history-img-card {
+    aspect-ratio: 2/3; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-color); background: #fff;
+    cursor: pointer; transition: transform 0.2s;
+  }
+  .history-img-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+  .history-img-card img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- 历史界面底部固定输入区域 --- */
+  .history-footer {
+    padding: 24px 32px; background: transparent; border-top: none;
+    flex-shrink: 0; display: flex; justify-content: center;
+  }
+  /* 输入框容器保持原样 */
+  .history-input-wrapper {
+    position: relative; display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1px solid var(--border-color);
+    padding: 8px 8px 8px 16px; border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); width: 100%; max-width: 800px;
+  }
+  .history-input { border: none; outline: none; font-size: 14px; flex: 1; color: var(--text-primary); background: transparent; }
+  .history-input::placeholder { color: #9CA3AF; }
+  .history-send-btn {
+    background: var(--text-primary); color: #fff; border: none;
+    padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background 0.2s; white-space: nowrap;
+  }
+  .history-send-btn:hover { background: #000; }
+  .history-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* --- Assets View --- */
+  .assets-view {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-color); z-index: 15;
+    display: none; flex-direction: column; overflow-y: auto; padding: 40px;
+  }
+  .assets-view.active { display: flex; animation: fadeIn 0.3s ease-out; }
+
+  .assets-header {
+    margin-bottom: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .assets-header h2 {
+    font-size: 24px; font-weight: 700; color: var(--text-primary);
+  }
+  .close-assets-btn {
+    background: #111111; color: #FFFFFF;
+    border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .close-assets-btn:hover { background: #333333; transform: translateY(-1px); }
+
+  .asset-section {
+    margin-bottom: 32px;
+  }
+  .asset-section-title {
+    font-size: 16px; font-weight: 600; color: var(--text-primary);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .asset-card {
+    aspect-ratio: 1; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-color); background: #fff;
+    position: relative; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .asset-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  .asset-card img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .asset-delete-btn {
+    position: absolute; top: 4px; right: 4px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6); color: white; border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .asset-card:hover .asset-delete-btn { opacity: 1; }
+  .asset-delete-btn:hover { background: rgba(220, 38, 38, 0.9); }
+
+  /* Selection Mode Styles */
+  .selection-bar {
+    position: fixed; top: 40px; left: 50%;
+    transform: translateX(-50%);
+    background: white; padding: 12px 24px;
+    border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    display: flex; align-items: center; gap: 16px;
+    z-index: 20;
+  }
+  .selection-count {
+    font-size: 14px; font-weight: 600; color: var(--text-primary);
+  }
+  .confirm-selection-btn {
+    background: var(--text-primary); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .confirm-selection-btn:hover { background: #000; }
+
+  .asset-check-icon {
+    position: absolute; bottom: 8px; left: 8px;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid #D1D5DB; background: white;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: all 0.2s;
+  }
+  .assets-view.selection-mode .asset-card:hover .asset-check-icon {
+    opacity: 1;
+  }
+  .asset-card.selected .asset-check-icon {
+    opacity: 1;
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: white;
+  }
+  .assets-view.selection-mode .asset-delete-btn {
+    display: none;
+  }
+
+  /* Brand Combo Modal */
+  .brand-combo-modal {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); z-index: 9999;
+    justify-content: center; align-items: center;
+  }
+  .brand-combo-modal.active { display: flex; }
+
+  .brand-modal-buttons {
+    display: flex; gap: 12px; margin-top: 8px;
+  }
+  .brand-btn {
+    flex: 1; padding: 12px 24px;
+    background: var(--text-primary); color: white;
+    border: none; border-radius: 8px;
+    font-weight: 600; font-size: 14px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .brand-btn:hover {
+    background: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
 
 </style>
 </head>
 <body class="sidebar-collapsed">
 
-  <div class="aurora-container" id="auroraLayer">
-    <div class="aurora-lights"></div>
-  </div>
+  <div class="aurora-container" id="auroraLayer"><div class="aurora-lights"></div></div>
 
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="index.html" class="app-logo">
-        <img src="logo.png" alt="WhiteMirror">
-        <span>WhiteMirror</span>
-      </a>
-      <button class="toggle-sidebar-btn" id="toggleSidebar" title="Toggle Sidebar">
-        <svg class="toggle-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="M15 10l-2 2 2 2"></path></svg>
-      </button>
+      <a href="index.html" class="app-logo"><img src="logo.png" alt="WhiteMirror"><span>WhiteMirror</span></a>
+      <button class="toggle-sidebar-btn" id="toggleSidebar" title="Toggle Sidebar"><svg class="toggle-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="M15 10l-2 2 2 2"></path></svg></button>
     </div>
     <div class="sidebar-scroll-area">
       <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span class="summary-text">生成设置</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><div class="control-group"><div class="label-row"><span>海报比例</span></div><div class="select-wrapper"><svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"></rect></svg><select id="aspect-ratio-select" class="modern-select"><option value="9:16">9:16 (抖音/Story)</option><option value="16:9">16:9 (横屏视频)</option><option value="1:1">1:1 (Instagram)</option><option value="3:4">3:4 (小红书)</option><option value="4:3">4:3 (传统媒体)</option></select><svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="control-group"><div class="label-row"><span>生成数量</span><span id="count-val" style="color:#0E7490; font-weight:700;">4</span></div><div class="slider-container"><input type="range" min="1" max="10" value="4" class="slider-range" id="count-slider" oninput="updateSlider(this, 'count-val')"><div class="slider-labels"><span>1</span><span>10</span></div></div></div></div></details>
-      <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span class="summary-text">历史对话</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 20px 0;">暂无历史记录</p></div></details>
-      <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg><span class="summary-text">风格库</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><div class="control-group"><div class="label-row"><span>预设风格</span></div><div class="select-wrapper"><svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg><select id="preset-style-select" class="modern-select"><option value="auto">✨ 自动匹配 (Auto)</option><option value="minimal">⚪ 极简主义 (Minimalist)</option><option value="tech">🔵 商务科技 (Tech)</option><option value="warm">🟠 温暖手绘 (Hand-drawn)</option></select><svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="control-group"><div class="label-row"><span>风格强度</span><span id="strength-val" style="color:#0E7490; font-weight:700;">0.65</span></div><div class="slider-container"><input type="range" min="0" max="1" step="0.01" value="0.65" class="slider-range" id="strength-slider" oninput="updateSlider(this, 'strength-val')"><div class="slider-labels"><span>0.00</span><span>1.00</span></div></div></div></div></details>
-      <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span class="summary-text">素材管理</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><div class="control-group"><div class="label-row"><span>Logo 上传</span></div><div class="dropzone"><div class="dz-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div><div class="dz-text">拖拽或点击上传</div><span class="dz-btn">浏览...</span></div><div class="checkbox-wrapper"><input type="checkbox" id="auto-logo" class="custom-checkbox" checked><label for="auto-logo" class="checkbox-label">自动添加到画面</label></div></div><div class="control-group"><div class="label-row"><span>二维码 上传</span></div><div class="dropzone"><div class="dz-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div><div class="dz-text">拖拽或点击上传</div></div></div><a href="#" class="manage-link">管理整个素材库<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></a></div></details>
+
+      <details class="settings-card" id="historyDetails">
+        <summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span class="summary-text">历史对话</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary>
+        <div class="card-content">
+          <ul class="history-list" id="historyList">
+            <p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 10px 0;">暂无历史记录</p>
+          </ul>
+        </div>
+      </details>
+
+      <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg><span class="summary-text">风格库</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><div class="control-group"><div class="label-row"><span>预设风格</span></div><div class="select-wrapper"><svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg><select id="preset-style-select" class="modern-select"><option value="auto">✨ 自动匹配 (Auto)</option><option value="minimal">⚪ 极简主义 (Minimalist)</option><option value="tech">🔵 商务科技 (Tech)</option><option value="warm">🟠 温暖手绘 (Hand-drawn)</option><option value="add_custom">➕ 添加风格</option></select><svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><div class="control-group"><div class="label-row"><span>风格强度</span><span id="strength-val" style="color:#0E7490; font-weight:700;">0.65</span></div><div class="slider-container"><input type="range" min="0" max="1" step="0.01" value="0.65" class="slider-range" id="strength-slider" oninput="updateSlider(this, 'strength-val')"><div class="slider-labels"><span>0.00</span><span>1.00</span></div></div></div></div></details>
+      <details class="settings-card"><summary><div class="summary-title"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span class="summary-text">素材管理</span></div><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></summary><div class="card-content"><div class="control-group"><div class="label-row"><span>Logo 上传</span></div><div class="dropzone" id="logoDropzone"><div class="dropzone-content"><div class="dz-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></div><div class="dz-text">拖拽或点击上传</div><span class="dz-btn">浏览...</span></div><img class="dropzone-thumbnail" id="logoThumbnail" src="" alt="Logo"><button class="dropzone-remove" id="logoRemove"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div><div class="checkbox-wrapper"><input type="checkbox" id="auto-logo" class="custom-checkbox" checked><label for="auto-logo" class="checkbox-label">自动添加到画面</label></div></div><div class="control-group"><div class="label-row"><span>二维码 上传</span></div><div class="dropzone" id="qrDropzone"><div class="dropzone-content"><div class="dz-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div><div class="dz-text">拖拽或点击上传</div><span class="dz-btn">浏览...</span></div><img class="dropzone-thumbnail" id="qrThumbnail" src="" alt="QR Code"><button class="dropzone-remove" id="qrRemove"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div></div><div class="control-group"><div class="label-row"><span>品牌视觉组合</span></div><div class="select-wrapper"><svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg><select id="brand-combo-select" class="modern-select"><option value="">无 (默认)</option><option value="add_combo">➕ 添加组合</option></select><svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div></div><a href="#" class="manage-link" id="manageAssetsBtn">管理整个素材库<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></a></div></details>
     </div>
     <div class="user-profile"><div class="avatar">U</div><div class="user-info"><h4>User Name</h4><p>Pro Plan</p></div></div>
   </aside>
 
   <main class="main-content">
-    <header class="workspace-header">
-      <div class="header-title">
-        <h1 id="mainTitle" class="title-text">准备好创作一张无与伦比的海报了吗？</h1>
-
-        <h1 id="newTitle" class="title-text"><span class="text-content">灵感无限，创意无疆！</span></h1>
-
-        <p id="loadingSubtext"><span class="text-content">海报正在生成中...</span></p>
-      </div>
-    </header>
-
-    <section class="creation-area" id="creationArea">
-      <div class="magic-input-box-wrapper" id="inputWrapper">
-        <!-- 图片预览区域 -->
-        <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
-          <div class="image-preview-card">
-            <img id="previewImage" src="" alt="参考图片">
-            <button class="remove-image-btn" id="removeImageBtn" title="移除图片">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-            <div class="image-label">参考图片（图生图）</div>
+    <div id="mainView">
+        <header class="workspace-header">
+          <div class="header-title">
+            <h1 id="mainTitle" class="title-text">准备好创作一张无与伦比的海报了吗?</h1>
+            <h1 id="newTitle" class="title-text"><span class="text-content">灵感无限,创意无疆!</span></h1>
+            <p id="loadingSubtext"><span class="text-content">海报正在生成中...</span></p>
           </div>
-        </div>
-
-        <textarea class="magic-textarea" id="promptInput" placeholder="描述你想要的画面，例如：赛博朋克风格的城市夜景，霓虹灯光..."></textarea>
-
-        <!-- 隐藏的文件输入 -->
-        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-
-        <div class="popover-menu" id="popoverMenu">
-          <ul class="popover-list">
-            <li class="popover-item" id="uploadImageItem">
-              <svg class="popover-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-              </svg>
-              上传参考图片（图生图）
-            </li>
-          </ul>
-        </div>
-        <div class="input-box-actions">
-          <div class="left-actions">
-            <button class="action-icon-btn" id="plusBtn"><svg class="action-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+        </header>
+        <section class="creation-area" id="creationArea">
+          <div class="magic-input-box-wrapper" id="inputWrapper">
+            <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+              <div class="image-preview-card">
+                <img id="previewImage" src="" alt="参考图片">
+                <button class="remove-image-btn" id="removeImageBtn" title="移除图片">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+                <div class="image-label">参考图片(图生图)</div>
+              </div>
+            </div>
+            <textarea class="magic-textarea" id="promptInput" placeholder="描述你想要的画面,例如:赛博朋克风格的城市夜景,霓虹灯光..."></textarea>
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            <div class="popover-menu" id="popoverMenu">
+              <ul class="popover-list">
+                <li class="popover-item" id="uploadImageItem">
+                  <svg class="popover-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                  上传参考图片(图生图)
+                </li>
+              </ul>
+            </div>
+            <div class="input-box-actions">
+              <div class="left-actions">
+                <button class="action-icon-btn" id="plusBtn"><svg class="action-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+              </div>
+              <div class="right-actions">
+                <button class="pro-brain-btn" id="modeToggleBtn"><svg class="brain-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.55 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.55 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg><svg class="lightning-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span class="tooltip">切换 Thinking/Fast 模式</span></button>
+                <button class="generate-arrow-btn" id="generateBtn"><svg class="mic-icon" id="micIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg><svg class="arrow-up-icon" id="arrowIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg><span class="tooltip">生成海报</span></button>
+              </div>
+            </div>
           </div>
-          <div class="right-actions">
-            <button class="pro-brain-btn" id="modeToggleBtn"><svg class="brain-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.55 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.55 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg><svg class="lightning-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span class="tooltip">切换 Thinking/Fast 模式</span></button>
-            <button class="generate-arrow-btn" id="generateBtn"><svg class="mic-icon" id="micIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg><svg class="arrow-up-icon" id="arrowIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg><span class="tooltip">生成海报</span></button>
+        </section>
+
+        <section class="results-view" id="resultsSection">
+          <div class="results-header">
+            <h2 id="resultTitle">创作完成!</h2>
+            <p id="resultSubtext">为您生成了 4 张不同风格的海报</p>
           </div>
+          <div class="results-grid">
+            </div>
+          <div class="regenerate-bar">
+            <button class="back-btn" id="backBtn">返回</button>
+            <input type="text" class="regen-input" id="regenInput" value="赛博朋克风格的城市夜景,霓虹灯光...">
+            <button class="regen-btn" id="regenBtn">重新生成</button>
+          </div>
+        </section>
+    </div>
+
+    <div class="history-view" id="historyView">
+      <div class="history-header">
+        <h2 id="historyTitle">对话详情</h2>
+        <button class="close-history-btn" id="closeHistoryBtn">返回创作</button>
+      </div>
+      <div class="session-container" id="sessionContainer">
+        </div>
+      <div class="history-footer">
+        <div class="history-input-wrapper">
+           <input type="text" class="history-input" id="historyInput" placeholder="继续生成新的图片...">
+           <button class="history-send-btn" id="historySendBtn">继续生成</button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="results-view" id="resultsSection">
-      <div class="results-header">
-        <h2 id="resultTitle">创作完成！</h2>
-        <p>为您生成了 4 张不同风格的海报</p>
+    <!-- Assets View -->
+    <div class="assets-view" id="assetsView">
+      <div class="assets-header">
+        <h2>素材库</h2>
+        <button class="close-assets-btn" id="closeAssetsBtn">返回</button>
       </div>
-      <div class="results-grid">
-        <div class="result-card"><div class="result-placeholder">Poster 1</div></div>
-        <div class="result-card"><div class="result-placeholder">Poster 2</div></div>
-        <div class="result-card"><div class="result-placeholder">Poster 3</div></div>
-        <div class="result-card"><div class="result-placeholder">Poster 4</div></div>
+      <div class="asset-section">
+        <div class="asset-section-title">Logo</div>
+        <div class="asset-grid" id="logoGrid">
+          <p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 20px; grid-column: 1/-1;">暂无 Logo 素材</p>
+        </div>
       </div>
-      <div class="regenerate-bar">
-        <button class="back-btn" id="backBtn">返回</button>
-        <input type="text" class="regen-input" value="赛博朋克风格的城市夜景，霓虹灯光...">
-        <button class="regen-btn">重新生成</button>
+      <div class="asset-section">
+        <div class="asset-section-title">二维码</div>
+        <div class="asset-grid" id="qrGrid">
+          <p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 20px; grid-column: 1/-1;">暂无二维码素材</p>
+        </div>
       </div>
-    </section>
+    </div>
 
   </main>
+
+  <!-- Hidden file inputs for asset uploads -->
+  <input type="file" id="logoAssetUpload" accept="image/*" style="display: none;">
+  <input type="file" id="qrAssetUpload" accept="image/*" style="display: none;">
+  <input type="file" id="brandLocalUpload" accept="image/*" multiple style="display: none;">
+
+  <!-- 错误通知弹窗 -->
+  <div id="errorNotification" class="error-notification">
+    <button class="close-notification" onclick="this.parentElement.classList.remove('active')">×</button>
+    <p>
+        由于 <span id="errorReason">网络波动</span> 问题，只为您生成了 <span id="actualCount">0</span> 张图片。
+        <span class="retry-link" id="retryLink">点击此处</span> 为您重新生成图片。
+    </p>
+  </div>
+
+  <div class="lightbox-modal" id="lightboxModal">
+    <button class="lightbox-close" id="lightboxClose">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <div class="lightbox-content">
+      <img class="lightbox-image" id="lightboxImage" src="" alt="Large view">
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+
+  <!-- Custom Style Modal -->
+  <div class="custom-style-modal" id="customStyleModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeCustomModal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h2 class="modal-title">添加属于您自己的风格</h2>
+      <div class="modal-form">
+        <div class="form-group">
+          <label class="form-label">风格名称</label>
+          <input type="text" class="form-input" id="styleNameInput" placeholder="例如：赛博朋克">
+        </div>
+        <div class="form-group">
+          <label class="form-label">风格定义</label>
+          <textarea class="form-textarea" id="styleDescInput" placeholder="详细描述这个风格的特点，例如：霓虹灯光效、深色背景、未来科技感..." rows="5"></textarea>
+        </div>
+        <button class="modal-confirm-btn" id="confirmStyleBtn">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Combo Modal -->
+  <div class="brand-combo-modal" id="brandComboModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeBrandModal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h2 class="modal-title">添加品牌元素组合</h2>
+      <div class="modal-form">
+        <div class="form-group">
+          <label class="form-label">品牌名称</label>
+          <input type="text" class="form-input" id="brandNameInput" placeholder="例如：公司品牌套装">
+        </div>
+        <div class="form-group">
+          <label class="form-label">选择图片</label>
+          <div class="brand-modal-buttons">
+            <button class="brand-btn" id="selectFromAssetsBtn">从素材库中选择</button>
+            <button class="brand-btn" id="selectFromLocalBtn">从本地上传</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
   // Basic Sidebar & UI Logic
   function updateSlider(slider, valId) { const value = (slider.value - slider.min) / (slider.max - slider.min) * 100; slider.style.backgroundSize = value + '% 100%'; const display = document.getElementById(valId); if (slider.step && slider.step < 1) { display.innerText = parseFloat(slider.value).toFixed(2); } else { display.innerText = slider.value; } }
   const toggleBtn = document.getElementById('toggleSidebar'); const sidebar = document.body; toggleBtn.addEventListener('click', () => { sidebar.classList.toggle('sidebar-collapsed'); });
   const summaryHeaders = document.querySelectorAll('summary'); summaryHeaders.forEach(summary => { summary.addEventListener('click', (e) => { if (document.body.classList.contains('sidebar-collapsed')) { e.preventDefault(); document.body.classList.remove('sidebar-collapsed'); summary.parentElement.open = true; } }); });
-  document.addEventListener('DOMContentLoaded', () => { const sliders = document.querySelectorAll('.slider-range'); sliders.forEach(slider => { const valId = slider.id.replace('-slider', '-val'); updateSlider(slider, valId); }); });
+  document.addEventListener('DOMContentLoaded', () => { const sliders = document.querySelectorAll('.slider-range'); sliders.forEach(slider => { const valId = slider.id.replace('-slider', '-val'); updateSlider(slider, valId); }); loadSessionsFromStorage(); loadCustomStyles(); loadAssets(); loadBrandCombos(); });
   const textarea = document.querySelector('.magic-textarea'); const generateBtn = document.getElementById('generateBtn'); textarea.addEventListener('input', function() { if (this.value.trim().length > 0) { generateBtn.classList.add('show-arrow'); } else { generateBtn.classList.remove('show-arrow'); } });
   const modeBtn = document.getElementById('modeToggleBtn'); modeBtn.addEventListener('click', () => { modeBtn.classList.toggle('show-lightning'); });
   const plusBtn = document.getElementById('plusBtn'); const popoverMenu = document.getElementById('popoverMenu'); plusBtn.addEventListener('click', (e) => { e.stopPropagation(); popoverMenu.classList.toggle('active'); }); document.addEventListener('click', (e) => { if (!popoverMenu.contains(e.target) && !plusBtn.contains(e.target)) { popoverMenu.classList.remove('active'); } });
 
-  // ==========================================
-  //  图片上传功能（图生图）
-  // ==========================================
   const uploadImageItem = document.getElementById('uploadImageItem');
   const imageUpload = document.getElementById('imageUpload');
   const imagePreviewContainer = document.getElementById('imagePreviewContainer');
   const previewImage = document.getElementById('previewImage');
   const removeImageBtn = document.getElementById('removeImageBtn');
-  let referenceImageBase64 = null; // 存储 Base64 编码的图片
+  let referenceImageBase64 = null;
 
-  // 点击菜单项触发文件选择
-  uploadImageItem.addEventListener('click', () => {
-    imageUpload.click();
-    popoverMenu.classList.remove('active'); // 关闭菜单
-  });
-
-  // 处理文件选择
+  uploadImageItem.addEventListener('click', () => { imageUpload.click(); popoverMenu.classList.remove('active'); });
   imageUpload.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
-
-      reader.onload = (event) => {
-        referenceImageBase64 = event.target.result; // 保存 Base64 字符串
-        previewImage.src = referenceImageBase64;
-        imagePreviewContainer.style.display = 'block'; // 显示预览
-      };
-
-      reader.readAsDataURL(file); // 读取为 Base64
+      reader.onload = (event) => { referenceImageBase64 = event.target.result; previewImage.src = referenceImageBase64; imagePreviewContainer.style.display = 'block'; };
+      reader.readAsDataURL(file);
     }
   });
+  removeImageBtn.addEventListener('click', () => { referenceImageBase64 = null; previewImage.src = ''; imagePreviewContainer.style.display = 'none'; imageUpload.value = ''; });
 
-  // 移除图片
-  removeImageBtn.addEventListener('click', () => {
-    referenceImageBase64 = null;
-    previewImage.src = '';
-    imagePreviewContainer.style.display = 'none';
-    imageUpload.value = ''; // 清空文件输入
-  });
-
-  // ==========================================
-  //  核心交互逻辑：极光 -> 霓虹 -> 结果页切换
-  // ==========================================
   const auroraLayer = document.getElementById('auroraLayer');
   const inputWrapper = document.getElementById('inputWrapper');
   const mainTitle = document.getElementById('mainTitle');
@@ -676,123 +970,27 @@
   const resultsSection = document.getElementById('resultsSection');
   const backBtn = document.getElementById('backBtn');
 
-  // 1. 聚焦输入框：极光起伏 (Wave Active)
-  textarea.addEventListener('focus', () => {
-    if (!auroraLayer.classList.contains('absorbed')) {
-        auroraLayer.classList.add('wave-active');
-    }
-  });
+  textarea.addEventListener('focus', () => { if (!auroraLayer.classList.contains('absorbed')) { auroraLayer.classList.add('wave-active'); } });
+  textarea.addEventListener('blur', () => { if (textarea.value.trim().length === 0) { auroraLayer.classList.remove('wave-active'); } });
 
-  textarea.addEventListener('blur', () => {
-     if (textarea.value.trim().length === 0) {
-       auroraLayer.classList.remove('wave-active');
-     }
-  });
-
-  // 2. 点击生成：触发动画序列 + API调用
-  generateBtn.addEventListener('click', async () => {
-    const prompt = textarea.value.trim();
-    if (!prompt) {
-      alert('请输入海报描述');
-      return;
-    }
-
-    // 收集所有参数
-    const aspectRatio = document.getElementById('aspect-ratio-select').value;
-    const count = parseInt(document.getElementById('count-slider').value);
-    const presetStyle = document.getElementById('preset-style-select').value;
-    const styleIntensity = parseFloat(document.getElementById('strength-slider').value);
-    const thinkingMode = !modeBtn.classList.contains('show-lightning'); // 脑图标=thinking, 闪电=fast
-
-    // Phase 1: Aurora Shrink & Title Fade
-    auroraLayer.classList.remove('wave-active');
-    auroraLayer.classList.add('absorbed');
-    mainTitle.classList.add('fade-in-input');
-
-    // Phase 2: Neon Spin & New Title (0.8s)
-    setTimeout(() => {
-        newTitle.classList.add('pop-out');
-        loadingSubtext.classList.add('show');
-
-        // 激活扫描光效
-        newTitle.classList.add('scan-effect');
-        loadingSubtext.classList.add('scan-effect');
-
-        inputWrapper.classList.add('neon-active');
-    }, 1500);
-
-    // Phase 3: Call Backend API
-    setTimeout(async () => {
-        try {
-            // 发送API请求
-            const response = await fetch('http://localhost:8000/api/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    aspect_ratio: aspectRatio,
-                    count: count,
-                    preset_style: mapStyleValue(presetStyle),
-                    style_intensity: styleIntensity,
-                    negative_prompt: null,
-                    thinking_mode: thinkingMode,
-                    reference_image: referenceImageBase64  // 添加参考图片
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`API错误: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            // 显示结果
-            displayResults(data.images, count);
-
-            // Fade out input area
-            creationArea.classList.add('fade-out');
-            newTitle.classList.remove('pop-out');
-            newTitle.style.opacity = '0';
-            loadingSubtext.classList.remove('show');
-            loadingSubtext.style.opacity = '0';
-
-            // Show Results
-            setTimeout(() => {
-                creationArea.style.display = 'none';
-                resultsSection.classList.add('active');
-            }, 500);
-
-        } catch (error) {
-            console.error('生成失败:', error);
-            alert(`生成失败: ${error.message}\n\n请确保：\n1. 后端服务器正在运行 (python server.py)\n2. 地址为 http://localhost:8000`);
-
-            // 重置UI状态
-            resetUIAfterError();
-        }
-    }, 2300); // 1.5s + 800ms for neon animation
-  });
-
-  // 风格值映射函数
   function mapStyleValue(value) {
-    const styleMap = {
-      'auto': 'Auto',
-      'minimal': 'Minimalist',
-      'tech': 'Tech',
-      'warm': 'Hand-drawn'
-    };
+    // 处理自定义风格（custom: 前缀）
+    if (value.startsWith('custom:')) {
+      return value.substring(7); // 返回描述部分，去掉 "custom:" 前缀
+    }
+    // 处理预设风格
+    const styleMap = { 'auto': 'Auto', 'minimal': 'Minimalist', 'tech': 'Tech', 'warm': 'Hand-drawn' };
     return styleMap[value] || 'Auto';
   }
 
-  // 显示结果图片
   function displayResults(base64Images, count) {
     const resultsGrid = document.querySelector('.results-grid');
-    resultsGrid.innerHTML = ''; // 清空现有内容
+    resultsGrid.innerHTML = '';
 
     base64Images.forEach((imgBase64, index) => {
       const card = document.createElement('div');
       card.className = 'result-card';
+      card.dataset.index = index;
 
       const img = document.createElement('img');
       img.src = imgBase64;
@@ -800,45 +998,1026 @@
       img.style.height = '100%';
       img.style.objectFit = 'cover';
 
-      card.appendChild(img);
+      img.addEventListener('click', (e) => {
+          if (e.target.closest('.card-overlay')) return;
+          openLightbox(imgBase64, index, base64Images);
+      });
+      img.style.cursor = 'pointer';
+
+      const overlay = document.createElement('div');
+      overlay.className = 'card-overlay';
+
+      const checkBtn = document.createElement('button');
+      checkBtn.className = 'card-action-btn select-icon';
+      checkBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      checkBtn.style.pointerEvents = 'auto';
+      checkBtn.addEventListener('click', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          card.classList.toggle('selected');
+      }, true);
+
+      const dlBtn = document.createElement('button');
+      dlBtn.className = 'card-action-btn';
+      dlBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>';
+      dlBtn.onclick = (e) => {
+          e.stopPropagation();
+          const link = document.createElement('a'); link.href = imgBase64; link.download = 'generated-poster.png'; link.click();
+      };
+
+      overlay.appendChild(checkBtn); overlay.appendChild(dlBtn);
+      card.appendChild(img); card.appendChild(overlay);
       resultsGrid.appendChild(card);
     });
 
-    // 更新提示文字
-    document.querySelector('.results-header p').innerText = `为您生成了 ${base64Images.length} 张不同风格的海报`;
+    document.getElementById('resultTitle').innerText = "创作完成!";
+    document.getElementById('resultTitle').classList.remove('gradient-text', 'scan-effect');
+    document.getElementById('resultSubtext').innerText = `为您生成了 ${base64Images.length} 张不同风格的海报`;
   }
 
-  // 错误后重置UI
   function resetUIAfterError() {
-    auroraLayer.classList.remove('absorbed');
-    auroraLayer.classList.add('wave-active');
-    mainTitle.classList.remove('fade-in-input');
-    newTitle.classList.remove('pop-out');
-    newTitle.classList.remove('scan-effect');
-    newTitle.style.opacity = '';
-    loadingSubtext.classList.remove('show');
-    loadingSubtext.classList.remove('scan-effect');
-    loadingSubtext.style.opacity = '';
+    auroraLayer.classList.remove('absorbed'); auroraLayer.classList.add('wave-active');
+    mainTitle.classList.remove('fade-in-input'); newTitle.classList.remove('pop-out'); newTitle.classList.remove('scan-effect'); newTitle.style.opacity = '';
+    loadingSubtext.classList.remove('show'); loadingSubtext.classList.remove('scan-effect'); loadingSubtext.style.opacity = '';
     inputWrapper.classList.remove('neon-active');
   }
 
-  // 3. 返回输入状态 (Reset)
+  // 错误处理函数
+  function showPartialSuccessError(actual, expected, errorReason) {
+      // 使用后端返回的真实错误原因，如果没有则使用默认值
+      const displayReason = errorReason || "未知原因";
+
+      document.getElementById('errorReason').innerText = displayReason;
+      document.getElementById('actualCount').innerText = actual;
+
+      const notification = document.getElementById('errorNotification');
+      notification.classList.add('active');
+
+      // 不自动隐藏，只能手动关闭
+  }
+
+  /* --- 历史对话数据结构与逻辑 + localStorage --- */
+  let sessions = [];
+  let currentSessionId = null;
+  const STORAGE_KEY = 'whitemirror_sessions';
+  const CUSTOM_STYLES_KEY = 'whitemirror_custom_styles';
+  let lastRequestMetadata = { type: null, params: null }; // 记录最后请求的元数据
+  let customStyles = []; // 存储自定义风格
+
+  function saveSessionsToStorage() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); } catch (e) { console.error('保存历史记录失败:', e); }
+  }
+
+  function loadSessionsFromStorage() {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) { sessions = JSON.parse(stored); renderHistorySidebar(); }
+    } catch (e) { console.error('加载历史记录失败:', e); sessions = []; }
+  }
+
+  // 自定义风格持久化
+  function saveCustomStyles(styles) {
+    try { localStorage.setItem(CUSTOM_STYLES_KEY, JSON.stringify(styles)); } catch (e) { console.error('保存自定义风格失败:', e); }
+  }
+
+  function loadCustomStyles() {
+    try {
+      const stored = localStorage.getItem(CUSTOM_STYLES_KEY);
+      if (stored) {
+        const styles = JSON.parse(stored);
+        customStyles = styles; // 更新全局数组
+        const styleSelect = document.getElementById('preset-style-select');
+        const addOption = styleSelect.querySelector('option[value="add_custom"]');
+
+        styles.forEach(style => {
+          const newOption = document.createElement('option');
+          newOption.value = `custom:${style.description}`;
+          newOption.text = `🎨 ${style.name}`;
+          styleSelect.insertBefore(newOption, addOption);
+        });
+      }
+    } catch (e) { console.error('加载自定义风格失败:', e); }
+  }
+
+  function createNewSession(initialPrompt) {
+    const id = Date.now().toString();
+    const title = initialPrompt.length > 15 ? initialPrompt.substring(0, 15) + '...' : initialPrompt;
+    const session = { id: id, title: title, timestamp: new Date().toISOString(), turns: [] };
+    sessions.unshift(session);
+    currentSessionId = id;
+    renderHistorySidebar();
+    saveSessionsToStorage();
+    return session;
+  }
+
+  function addTurnToSession(prompt, images) {
+    const session = sessions.find(s => s.id === currentSessionId);
+    if (session) { session.turns.push({ prompt: prompt, images: images }); saveSessionsToStorage(); }
+  }
+
+  function deleteSession(id, event) {
+    if (event) event.stopPropagation();
+    if (!confirm('确定要删除这个对话吗?')) return;
+
+    sessions = sessions.filter(s => s.id !== id);
+    saveSessionsToStorage();
+    renderHistorySidebar();
+
+    const historyView = document.getElementById('historyView');
+    if (historyView.classList.contains('active') && currentSessionId === id) {
+        historyView.classList.remove('active');
+        document.getElementById('mainView').style.display = 'block';
+    }
+  }
+
+  function renderHistorySidebar() {
+    const list = document.getElementById('historyList');
+    list.innerHTML = '';
+    if (sessions.length === 0) {
+      list.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 10px 0;">暂无历史记录</p>';
+      return;
+    }
+    sessions.forEach(session => {
+      const li = document.createElement('li');
+      li.className = 'history-item';
+      li.innerHTML = `
+        <svg class="history-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span class="history-text">${session.title}</span>
+        <button class="delete-session-btn" onclick="deleteSession('${session.id}', event)" title="删除对话">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      `;
+      li.onclick = () => showSessionHistory(session.id);
+      list.appendChild(li);
+    });
+  }
+
+  function showSessionHistory(sessionId) {
+    currentSessionId = sessionId;
+    const session = sessions.find(s => s.id === sessionId);
+    if (!session) return;
+
+    const container = document.getElementById('sessionContainer');
+    container.innerHTML = '';
+    document.getElementById('historyTitle').innerText = session.title;
+
+    session.turns.forEach(turn => {
+      const turnBlock = document.createElement('div');
+      turnBlock.className = 'turn-block';
+
+      const promptBubble = document.createElement('div');
+      promptBubble.className = 'user-prompt-bubble';
+      promptBubble.innerText = turn.prompt;
+      turnBlock.appendChild(promptBubble);
+
+      const grid = document.createElement('div');
+      grid.className = 'ai-response-grid';
+      turn.images.forEach(imgSrc => {
+        const card = document.createElement('div');
+        card.className = 'history-img-card';
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.onclick = () => openLightbox(imgSrc, 0, [imgSrc]);
+        card.appendChild(img);
+        grid.appendChild(card);
+      });
+      turnBlock.appendChild(grid);
+      container.appendChild(turnBlock);
+    });
+
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('historyView').classList.add('active');
+
+    setTimeout(() => {
+        container.scrollTop = container.scrollHeight;
+    }, 100);
+  }
+
+  document.getElementById('closeHistoryBtn').addEventListener('click', () => {
+    document.getElementById('historyView').classList.remove('active');
+    document.getElementById('mainView').style.display = 'block';
+  });
+
+  const historySendBtn = document.getElementById('historySendBtn');
+  const historyInput = document.getElementById('historyInput');
+
+  historySendBtn.addEventListener('click', async () => {
+     const newPrompt = historyInput.value.trim();
+     if (!newPrompt) return;
+
+     historySendBtn.disabled = true;
+     historySendBtn.innerText = "生成中...";
+
+     const aspectRatio = document.getElementById('aspect-ratio-select').value;
+     const count = parseInt(document.getElementById('count-slider').value);
+     const thinkingMode = !modeBtn.classList.contains('show-lightning');
+
+     // 收集当前激活的素材
+     const activeAssets = collectActiveAssets();
+
+     const requestBody = {
+         prompt: newPrompt,
+         aspect_ratio: aspectRatio,
+         count: count,
+         preset_style: 'Auto',
+         style_intensity: 0.5,
+         negative_prompt: null,
+         thinking_mode: thinkingMode,
+         reference_image: null,
+         logo_image: activeAssets.logo_image,
+         qrcode_image: activeAssets.qrcode_image,
+         combo_images: activeAssets.combo_images
+     };
+
+     // 记录请求元数据
+     lastRequestMetadata = { type: 'history', params: requestBody };
+
+     try {
+        const response = await fetch('http://localhost:8000/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) { throw new Error(`API错误: ${response.status}`); }
+        const data = await response.json();
+
+        // 检查是否少生成图片
+        if (data.images.length < count) {
+            showPartialSuccessError(data.images.length, count, data.error_reason);
+        }
+
+        addTurnToSession(newPrompt, data.images);
+        showSessionHistory(currentSessionId);
+        historyInput.value = "";
+
+     } catch (error) {
+        console.error(error);
+        alert('生成失败');
+     } finally {
+        historySendBtn.disabled = false;
+        historySendBtn.innerText = "继续生成";
+     }
+  });
+
+
+  // Generate Logic
+  generateBtn.addEventListener('click', async () => {
+    const prompt = textarea.value.trim();
+    if (!prompt) { alert('请输入海报描述'); return; }
+
+    createNewSession(prompt);
+
+    const aspectRatio = document.getElementById('aspect-ratio-select').value;
+    const count = parseInt(document.getElementById('count-slider').value);
+    const presetStyle = document.getElementById('preset-style-select').value;
+    const styleIntensity = parseFloat(document.getElementById('strength-slider').value);
+    const thinkingMode = !modeBtn.classList.contains('show-lightning');
+
+    // 收集当前激活的素材
+    const activeAssets = collectActiveAssets();
+
+    const requestBody = {
+        prompt: prompt,
+        aspect_ratio: aspectRatio,
+        count: count,
+        preset_style: mapStyleValue(presetStyle),
+        style_intensity: styleIntensity,
+        negative_prompt: null,
+        thinking_mode: thinkingMode,
+        reference_image: referenceImageBase64,
+        logo_image: activeAssets.logo_image,
+        qrcode_image: activeAssets.qrcode_image,
+        combo_images: activeAssets.combo_images
+    };
+
+    // 记录请求元数据
+    lastRequestMetadata = { type: 'initial', params: requestBody };
+
+    auroraLayer.classList.remove('wave-active');
+    auroraLayer.classList.add('absorbed');
+    mainTitle.classList.add('fade-in-input');
+
+    setTimeout(() => {
+        newTitle.classList.add('pop-out');
+        loadingSubtext.classList.add('show');
+        newTitle.classList.add('scan-effect');
+        loadingSubtext.classList.add('scan-effect');
+        inputWrapper.classList.add('neon-active');
+    }, 1500);
+
+    setTimeout(async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+            if (!response.ok) { throw new Error(`API错误: ${response.status}`); }
+            const data = await response.json();
+
+            // 检查是否少生成图片
+            if (data.images.length < count) {
+                showPartialSuccessError(data.images.length, count, data.error_reason);
+            }
+
+            displayResults(data.images, count);
+            addTurnToSession(prompt, data.images);
+
+            creationArea.classList.add('fade-out');
+            newTitle.classList.remove('pop-out'); newTitle.style.opacity = '0';
+            loadingSubtext.classList.remove('show'); loadingSubtext.style.opacity = '0';
+
+            setTimeout(() => {
+                creationArea.style.display = 'none';
+                resultsSection.classList.add('active');
+
+                const regenInput = document.getElementById('regenInput');
+                const regenBtn = document.getElementById('regenBtn');
+                regenInput.value = "";
+                regenInput.placeholder = "勾选符合条件的图片,提出修改意见,继续改进...";
+                regenBtn.innerText = "继续生成";
+            }, 500);
+        } catch (error) {
+            console.error('生成失败:', error);
+            alert(`生成失败: ${error.message}\n\n请确保:\n1. 后端服务器正在运行 (python server.py)\n2. 地址为 http://localhost:8000`);
+            resetUIAfterError();
+        }
+    }, 2300);
+  });
+
   backBtn.addEventListener('click', () => {
-    // Reset View
     resultsSection.classList.remove('active');
     setTimeout(() => {
         creationArea.style.display = 'block';
         setTimeout(() => creationArea.classList.remove('fade-out'), 50);
-
-        // Reset Aurora & Titles
         auroraLayer.classList.remove('absorbed');
         mainTitle.classList.remove('fade-in-input');
-        newTitle.style.opacity = '';
-        newTitle.classList.remove('scan-effect');
-        loadingSubtext.style.opacity = '';
-        loadingSubtext.classList.remove('scan-effect');
+        newTitle.style.opacity = ''; newTitle.classList.remove('scan-effect');
+        loadingSubtext.style.opacity = ''; loadingSubtext.classList.remove('scan-effect');
         inputWrapper.classList.remove('neon-active');
+
+        const regenInput = document.getElementById('regenInput');
+        regenInput.value = textarea.value;
+        regenInput.placeholder = "";
+        document.getElementById('regenBtn').innerText = "重新生成";
+        document.querySelector('.regenerate-bar').classList.remove('neon-active');
     }, 300);
+  });
+
+  const regenBtn = document.getElementById('regenBtn');
+  const regenBar = document.querySelector('.regenerate-bar');
+
+  regenBtn.addEventListener('click', async () => {
+    const regenInput = document.getElementById('regenInput');
+    const newPrompt = regenInput.value.trim();
+    if (!newPrompt) { alert('请输入新的需求描述'); return; }
+
+    const selectedCards = document.querySelectorAll('.result-card.selected');
+    if (selectedCards.length === 0) { alert('请先勾选至少一张图片作为参考'); return; }
+
+    regenBtn.disabled = true;
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSubtext = document.getElementById('resultSubtext');
+
+    resultTitle.classList.add('fade-out-down');
+    resultSubtext.classList.add('fade-out-down');
+
+    setTimeout(() => {
+        resultTitle.innerText = "继续生成";
+        resultTitle.classList.add('gradient-text', 'scan-effect', 'fade-in-up');
+        resultTitle.classList.remove('fade-out-down');
+        resultSubtext.innerHTML = '根据您选中的图片为您继续生成新的图片<span class="wave-dots"><span>.</span><span>.</span><span>.</span></span>';
+        resultSubtext.classList.add('fade-in-up');
+        resultSubtext.classList.remove('fade-out-down');
+    }, 300);
+
+    const resultsGrid = document.querySelector('.results-grid');
+    const selectedImageBase64 = selectedCards[0].querySelector('img').src;
+
+    resultsGrid.innerHTML = '';
+    selectedCards.forEach(card => {
+        card.classList.remove('selected');
+        card.style.cursor = 'default';
+        const overlay = card.querySelector('.card-overlay');
+        if(overlay) overlay.style.display = 'none';
+        resultsGrid.appendChild(card);
+    });
+
+    regenBar.classList.add('neon-active');
+
+    const aspectRatio = document.getElementById('aspect-ratio-select').value;
+    const count = parseInt(document.getElementById('count-slider').value);
+    const thinkingMode = !modeBtn.classList.contains('show-lightning');
+
+    // 收集当前激活的素材
+    const activeAssets = collectActiveAssets();
+
+    const requestBody = {
+        prompt: newPrompt,
+        aspect_ratio: aspectRatio,
+        count: count,
+        preset_style: 'Auto',
+        style_intensity: 0.5,
+        negative_prompt: null,
+        thinking_mode: thinkingMode,
+        reference_image: selectedImageBase64,
+        logo_image: activeAssets.logo_image,
+        qrcode_image: activeAssets.qrcode_image,
+        combo_images: activeAssets.combo_images
+    };
+
+    // 记录请求元数据
+    lastRequestMetadata = { type: 'regenerate', params: requestBody };
+
+    try {
+        const response = await fetch('http://localhost:8000/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) { throw new Error(`API错误: ${response.status}`); }
+        const data = await response.json();
+
+        // 检查是否少生成图片
+        if (data.images.length < count) {
+            showPartialSuccessError(data.images.length, count, data.error_reason);
+        }
+
+        addTurnToSession(newPrompt, data.images);
+
+        resultTitle.classList.remove('fade-in-up', 'gradient-text', 'scan-effect');
+        resultSubtext.classList.remove('fade-in-up');
+
+        displayResults(data.images, count);
+        regenBar.classList.remove('neon-active');
+        regenInput.value = "";
+        regenInput.placeholder = "勾选符合条件的图片,提出修改意见,继续改进...";
+
+    } catch (error) {
+        console.error('继续生成失败:', error);
+        alert(`生成失败: ${error.message}`);
+        resultTitle.innerText = "生成出错";
+        regenBar.classList.remove('neon-active');
+    } finally {
+        regenBtn.disabled = false;
+    }
+  });
+
+  // 错误重试逻辑
+  document.getElementById('retryLink').addEventListener('click', () => {
+      document.getElementById('errorNotification').classList.remove('active');
+
+      if (!lastRequestMetadata.params) return;
+
+      if (lastRequestMetadata.type === 'initial') {
+          // 返回主界面并重新生成
+          backBtn.click();
+          setTimeout(() => {
+              textarea.value = lastRequestMetadata.params.prompt;
+              generateBtn.click();
+          }, 400);
+      } else if (lastRequestMetadata.type === 'regenerate') {
+          // 恢复输入框内容并重新生成
+          const regenInput = document.getElementById('regenInput');
+          regenInput.value = lastRequestMetadata.params.prompt;
+          setTimeout(() => regenBtn.click(), 100);
+      } else if (lastRequestMetadata.type === 'history') {
+          // 恢复历史输入框内容并重新生成
+          const historyInput = document.getElementById('historyInput');
+          historyInput.value = lastRequestMetadata.params.prompt;
+          setTimeout(() => historySendBtn.click(), 100);
+      }
+  });
+
+  // Lightbox Logic
+  let currentLightboxImages = [];
+  let currentLightboxIndex = 0;
+  function openLightbox(imageSrc, index, allImages) {
+    currentLightboxImages = allImages;
+    currentLightboxIndex = index;
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImage = document.getElementById('lightboxImage');
+    lightboxImage.src = imageSrc;
+    lightboxModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightboxModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function showNextImage() {
+    if (currentLightboxImages.length === 0) return;
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+    document.getElementById('lightboxImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+  function showPrevImage() {
+    if (currentLightboxImages.length === 0) return;
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+    document.getElementById('lightboxImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxNext').addEventListener('click', showNextImage);
+  document.getElementById('lightboxPrev').addEventListener('click', showPrevImage);
+  document.getElementById('lightboxModal').addEventListener('click', (e) => { if (e.target.id === 'lightboxModal') closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightboxModal').classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNextImage();
+    if (e.key === 'ArrowLeft') showPrevImage();
+  });
+
+  // Custom Style Modal Logic
+  const customStyleModal = document.getElementById('customStyleModal');
+  const styleSelect = document.getElementById('preset-style-select');
+  const styleNameInput = document.getElementById('styleNameInput');
+  const styleDescInput = document.getElementById('styleDescInput');
+  const confirmStyleBtn = document.getElementById('confirmStyleBtn');
+  const closeCustomModalBtn = document.getElementById('closeCustomModal');
+
+  // 当选择"添加风格"时打开模态框
+  styleSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'add_custom') {
+      customStyleModal.classList.add('active');
+      // 重置选择为之前的值
+      const options = styleSelect.options;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value !== 'add_custom' && i > 0) {
+          styleSelect.selectedIndex = 0; // 重置为自动匹配
+          break;
+        }
+      }
+    }
+  });
+
+  // 关闭模态框
+  function closeCustomModal() {
+    customStyleModal.classList.remove('active');
+    styleNameInput.value = '';
+    styleDescInput.value = '';
+  }
+
+  closeCustomModalBtn.addEventListener('click', closeCustomModal);
+  customStyleModal.addEventListener('click', (e) => {
+    if (e.target === customStyleModal) closeCustomModal();
+  });
+
+  // 确认添加自定义风格
+  confirmStyleBtn.addEventListener('click', () => {
+    const name = styleNameInput.value.trim();
+    const desc = styleDescInput.value.trim();
+
+    if (!name || !desc) {
+      alert('请填写完整的风格名称和定义');
+      return;
+    }
+
+    // 添加到全局数组
+    customStyles.push({ name: name, description: desc });
+
+    // 保存到 localStorage
+    saveCustomStyles(customStyles);
+
+    // 添加到下拉菜单（在"添加风格"选项之前）
+    const newOption = document.createElement('option');
+    newOption.value = `custom:${desc}`;
+    newOption.text = `🎨 ${name}`;
+    const addOption = styleSelect.querySelector('option[value="add_custom"]');
+    styleSelect.insertBefore(newOption, addOption);
+
+    // 自动选中新添加的风格
+    styleSelect.value = newOption.value;
+
+    // 关闭模态框
+    closeCustomModal();
+  });
+
+  /* --- Assets Library & Brand Combo Logic --- */
+  const LOGO_ASSETS_KEY = 'whitemirror_logo_assets';
+  const QR_ASSETS_KEY = 'whitemirror_qr_assets';
+  const BRAND_COMBOS_KEY = 'whitemirror_brand_combos';
+
+  let logoAssets = [];
+  let qrAssets = [];
+  let brandCombos = [];
+  let isSelectionMode = false;
+  let selectedAssets = [];
+
+  // 当前激活的素材（用于生成时传递给后端）
+  let currentLogo = null;
+  let currentQR = null;
+  let currentBrandCombo = null;
+
+  // 收集当前所有需要包含在生成中的素材
+  function collectActiveAssets() {
+    const assets = {
+      logo_image: currentLogo || null,
+      qrcode_image: currentQR || null,
+      combo_images: null
+    };
+
+    // 如果选择了品牌组合，添加组合中的所有图片
+    if (currentBrandCombo && currentBrandCombo.images && currentBrandCombo.images.length > 0) {
+      assets.combo_images = currentBrandCombo.images;
+    }
+
+    return assets;
+  }
+
+  // Save and load assets
+  function saveAssets() {
+    try {
+      localStorage.setItem(LOGO_ASSETS_KEY, JSON.stringify(logoAssets));
+      localStorage.setItem(QR_ASSETS_KEY, JSON.stringify(qrAssets));
+    } catch (e) {
+      console.error('保存素材失败:', e);
+    }
+  }
+
+  function loadAssets() {
+    try {
+      const storedLogos = localStorage.getItem(LOGO_ASSETS_KEY);
+      const storedQRs = localStorage.getItem(QR_ASSETS_KEY);
+      if (storedLogos) logoAssets = JSON.parse(storedLogos);
+      if (storedQRs) qrAssets = JSON.parse(storedQRs);
+    } catch (e) {
+      console.error('加载素材失败:', e);
+      logoAssets = [];
+      qrAssets = [];
+    }
+  }
+
+  // Save and load brand combos
+  function saveBrandCombos() {
+    try {
+      localStorage.setItem(BRAND_COMBOS_KEY, JSON.stringify(brandCombos));
+    } catch (e) {
+      console.error('保存品牌组合失败:', e);
+    }
+  }
+
+  function loadBrandCombos() {
+    try {
+      const stored = localStorage.getItem(BRAND_COMBOS_KEY);
+      if (stored) {
+        brandCombos = JSON.parse(stored);
+        const brandComboSelect = document.getElementById('brand-combo-select');
+        const addOption = brandComboSelect.querySelector('option[value="add_combo"]');
+
+        brandCombos.forEach(combo => {
+          const newOption = document.createElement('option');
+          newOption.value = `combo_${combo.id}`;
+          newOption.text = `📦 ${combo.name}`;
+          brandComboSelect.insertBefore(newOption, addOption);
+        });
+      }
+    } catch (e) {
+      console.error('加载品牌组合失败:', e);
+      brandCombos = [];
+    }
+  }
+
+  // Asset upload handlers
+  const logoDropzone = document.getElementById('logoDropzone');
+  const qrDropzone = document.getElementById('qrDropzone');
+  const logoAssetUpload = document.getElementById('logoAssetUpload');
+  const qrAssetUpload = document.getElementById('qrAssetUpload');
+
+  logoDropzone.addEventListener('click', () => logoAssetUpload.click());
+  qrDropzone.addEventListener('click', () => qrAssetUpload.click());
+
+  logoAssetUpload.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target.result;
+        // 保存到素材库
+        logoAssets.push(base64);
+        saveAssets();
+        // 设置为当前激活的 Logo
+        currentLogo = base64;
+        // 显示缩略图
+        document.getElementById('logoThumbnail').src = base64;
+        document.getElementById('logoDropzone').classList.add('has-image');
+      };
+      reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+  });
+
+  qrAssetUpload.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target.result;
+        // 保存到素材库
+        qrAssets.push(base64);
+        saveAssets();
+        // 设置为当前激活的二维码
+        currentQR = base64;
+        // 显示缩略图
+        document.getElementById('qrThumbnail').src = base64;
+        document.getElementById('qrDropzone').classList.add('has-image');
+      };
+      reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+  });
+
+  // 删除 Logo 缩略图
+  document.getElementById('logoRemove').addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentLogo = null;
+    document.getElementById('logoThumbnail').src = '';
+    document.getElementById('logoDropzone').classList.remove('has-image');
+  });
+
+  // 删除二维码缩略图
+  document.getElementById('qrRemove').addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentQR = null;
+    document.getElementById('qrThumbnail').src = '';
+    document.getElementById('qrDropzone').classList.remove('has-image');
+  });
+
+  // Open/Close Assets View
+  const manageAssetsBtn = document.getElementById('manageAssetsBtn');
+  const assetsView = document.getElementById('assetsView');
+  const closeAssetsBtn = document.getElementById('closeAssetsBtn');
+  const mainView = document.getElementById('mainView');
+
+  manageAssetsBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openAssetsView();
+  });
+
+  closeAssetsBtn.addEventListener('click', () => closeAssetsView());
+
+  function openAssetsView(selectionMode = false) {
+    isSelectionMode = selectionMode;
+    selectedAssets = [];
+
+    if (selectionMode) {
+      assetsView.classList.add('selection-mode');
+      // Add selection bar
+      if (!document.getElementById('selectionBar')) {
+        const selectionBar = document.createElement('div');
+        selectionBar.id = 'selectionBar';
+        selectionBar.className = 'selection-bar';
+        selectionBar.innerHTML = `
+          <span class="selection-count">已选择 0 张图片</span>
+          <button class="confirm-selection-btn" id="confirmSelectionBtn">确定</button>
+        `;
+        assetsView.appendChild(selectionBar);
+
+        document.getElementById('confirmSelectionBtn').addEventListener('click', confirmSelection);
+      }
+    } else {
+      assetsView.classList.remove('selection-mode');
+      const selectionBar = document.getElementById('selectionBar');
+      if (selectionBar) selectionBar.remove();
+    }
+
+    assetsView.classList.add('active');
+    mainView.style.display = 'none';
+    renderAssets();
+  }
+
+  function closeAssetsView() {
+    assetsView.classList.remove('active');
+    assetsView.classList.remove('selection-mode');
+    mainView.style.display = 'block';
+    isSelectionMode = false;
+    selectedAssets = [];
+  }
+
+  // Render assets
+  function renderAssets() {
+    const logoGrid = document.getElementById('logoGrid');
+    const qrGrid = document.getElementById('qrGrid');
+
+    logoGrid.innerHTML = '';
+    qrGrid.innerHTML = '';
+
+    if (logoAssets.length === 0) {
+      logoGrid.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 20px; grid-column: 1/-1;">暂无 Logo 素材</p>';
+    } else {
+      logoAssets.forEach((src, index) => {
+        const card = createAssetCard(src, 'logo', index);
+        logoGrid.appendChild(card);
+      });
+    }
+
+    if (qrAssets.length === 0) {
+      qrGrid.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary); text-align: center; padding: 20px; grid-column: 1/-1;">暂无二维码素材</p>';
+    } else {
+      qrAssets.forEach((src, index) => {
+        const card = createAssetCard(src, 'qr', index);
+        qrGrid.appendChild(card);
+      });
+    }
+  }
+
+  function createAssetCard(src, type, index) {
+    const card = document.createElement('div');
+    card.className = 'asset-card';
+    card.dataset.type = type;
+    card.dataset.index = index;
+    card.dataset.src = src;
+
+    const img = document.createElement('img');
+    img.src = src;
+    card.appendChild(img);
+
+    if (isSelectionMode) {
+      // Selection mode: add checkbox
+      const checkIcon = document.createElement('div');
+      checkIcon.className = 'asset-check-icon';
+      checkIcon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      card.appendChild(checkIcon);
+
+      card.addEventListener('click', () => {
+        card.classList.toggle('selected');
+        if (card.classList.contains('selected')) {
+          selectedAssets.push(src);
+        } else {
+          selectedAssets = selectedAssets.filter(s => s !== src);
+        }
+        updateSelectionCount();
+      });
+    } else {
+      // Normal mode: add delete button and click to view
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'asset-delete-btn';
+      deleteBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm('确定要删除这个素材吗？')) {
+          if (type === 'logo') {
+            logoAssets.splice(index, 1);
+          } else {
+            qrAssets.splice(index, 1);
+          }
+          saveAssets();
+          renderAssets();
+        }
+      });
+      card.appendChild(deleteBtn);
+
+      // Click to open lightbox
+      img.addEventListener('click', () => {
+        openLightbox(src, 0, [src]);
+      });
+    }
+
+    return card;
+  }
+
+  function updateSelectionCount() {
+    const countSpan = document.querySelector('.selection-count');
+    if (countSpan) {
+      countSpan.textContent = `已选择 ${selectedAssets.length} 张图片`;
+    }
+  }
+
+  function confirmSelection() {
+    if (selectedAssets.length === 0) {
+      alert('请至少选择一张图片');
+      return;
+    }
+
+    const brandNameInput = document.getElementById('brandNameInput');
+    const brandName = brandNameInput.value.trim();
+
+    if (!brandName) {
+      alert('请先输入品牌名称');
+      closeAssetsView();
+      document.getElementById('brandComboModal').classList.add('active');
+      return;
+    }
+
+    // Save brand combo
+    const combo = {
+      id: Date.now(),
+      name: brandName,
+      images: [...selectedAssets]
+    };
+    brandCombos.push(combo);
+    saveBrandCombos();
+
+    // Add to dropdown
+    const brandComboSelect = document.getElementById('brand-combo-select');
+    const newOption = document.createElement('option');
+    newOption.value = `combo_${combo.id}`;
+    newOption.text = `📦 ${combo.name}`;
+    const addOption = brandComboSelect.querySelector('option[value="add_combo"]');
+    brandComboSelect.insertBefore(newOption, addOption);
+    brandComboSelect.value = newOption.value;
+
+    alert('品牌组合添加成功！');
+    closeAssetsView();
+    closeBrandModal();
+  }
+
+  // Brand Combo Modal Logic
+  const brandComboModal = document.getElementById('brandComboModal');
+  const brandComboSelect = document.getElementById('brand-combo-select');
+  const brandNameInput = document.getElementById('brandNameInput');
+  const closeBrandModalBtn = document.getElementById('closeBrandModal');
+  const selectFromAssetsBtn = document.getElementById('selectFromAssetsBtn');
+  const selectFromLocalBtn = document.getElementById('selectFromLocalBtn');
+  const brandLocalUpload = document.getElementById('brandLocalUpload');
+
+  brandComboSelect.addEventListener('change', (e) => {
+    if (e.target.value === 'add_combo') {
+      brandComboModal.classList.add('active');
+      brandComboSelect.selectedIndex = 0;
+    } else if (e.target.value && e.target.value.startsWith('combo_')) {
+      // 用户选择了品牌组合
+      const comboId = e.target.value.replace('combo_', '');
+      const combo = brandCombos.find(c => c.id.toString() === comboId);
+      if (combo) {
+        currentBrandCombo = combo;
+      }
+    } else {
+      // 用户选择了"无 (默认)"
+      currentBrandCombo = null;
+    }
+  });
+
+  function closeBrandModal() {
+    brandComboModal.classList.remove('active');
+    brandNameInput.value = '';
+  }
+
+  closeBrandModalBtn.addEventListener('click', closeBrandModal);
+  brandComboModal.addEventListener('click', (e) => {
+    if (e.target === brandComboModal) closeBrandModal();
+  });
+
+  selectFromAssetsBtn.addEventListener('click', () => {
+    const brandName = brandNameInput.value.trim();
+    if (!brandName) {
+      alert('请先输入品牌名称');
+      return;
+    }
+    brandComboModal.classList.remove('active');
+    openAssetsView(true);
+  });
+
+  selectFromLocalBtn.addEventListener('click', () => {
+    const brandName = brandNameInput.value.trim();
+    if (!brandName) {
+      alert('请先输入品牌名称');
+      return;
+    }
+    brandLocalUpload.click();
+  });
+
+  brandLocalUpload.addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    const brandName = brandNameInput.value.trim();
+    const images = [];
+    let loaded = 0;
+
+    files.forEach(file => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          images.push(event.target.result);
+          loaded++;
+
+          if (loaded === files.length) {
+            // All files loaded, create combo
+            const combo = {
+              id: Date.now(),
+              name: brandName,
+              images: images
+            };
+            brandCombos.push(combo);
+            saveBrandCombos();
+
+            // Add to dropdown
+            const newOption = document.createElement('option');
+            newOption.value = `combo_${combo.id}`;
+            newOption.text = `📦 ${combo.name}`;
+            const addOption = brandComboSelect.querySelector('option[value="add_combo"]');
+            brandComboSelect.insertBefore(newOption, addOption);
+            brandComboSelect.value = newOption.value;
+
+            alert('品牌组合添加成功！');
+            closeBrandModal();
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    e.target.value = '';
   });
 
 </script>
