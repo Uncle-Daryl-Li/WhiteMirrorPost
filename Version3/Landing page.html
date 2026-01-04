@@ -18,7 +18,7 @@
   .site-header { position: absolute; top: 0; left: 0; width: 100%; padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
   .logo-container { display: flex; align-items: center; text-decoration: none; opacity: 0.9; transition: opacity 0.2s ease; }
   .logo-container:hover { opacity: 1; }
-  .logo-container img { height: 54px; width: auto; display: block; }
+  .logo-container img { height: 120px; width: auto; display: block; }
   .user-action-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: transparent; border: none; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; z-index: 200; }
   .user-icon-svg { width: 28px; height: 28px; stroke: #1a1a1a; stroke-width: 2; fill: none; transition: stroke 0.2s ease; }
   .user-action-btn:hover { background-color: rgba(0, 0, 0, 0.05); transform: scale(1.05); }
@@ -83,7 +83,7 @@
   .close-btn-icon:hover { color: #000; }
 
   /* 头部信息 */
-  .modal-logo { height: 40px; width: auto; margin-bottom: 24px; }
+  .modal-logo { height: 140px; width: auto; margin-bottom: 24px; }
   .modal-title { font-size: 28px; font-weight: 800; color: #111; margin-bottom: 8px; }
   
   /* 第一步的副标题 */
@@ -138,7 +138,7 @@
 <body>
 
 <header class="site-header">
-  <a href="#" class="logo-container"><img src="logo.png" alt="WhiteMirror Logo"></a>
+  <a href="#" class="logo-container"><img src="Logo1.png" alt="WhiteMirror Logo"></a>
   <button class="user-action-btn" id="userBtn" aria-label="Login">
     <svg class="user-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
   </button>
@@ -150,7 +150,7 @@
   <div class="content-wrapper">
     <h1 class="main-title dynamic-text">MirrorPost AI</h1>
     <p class="sub-title dynamic-text">专注你的每一个灵感瞬间</p>
-    <button class="capsule-btn" onclick="window.location.href='SaaS.html'">实现创想</button>
+    <button class="capsule-btn" onclick="checkLoginAndNavigate()">实现创想</button>
   </div>
 </main>
 
@@ -161,7 +161,7 @@
   <div class="login-modal-card">
     <svg class="close-btn-icon" onclick="toggleLogin()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     
-    <img src="logo.png" alt="WhiteMirror" class="modal-logo">
+    <img src="Logo1.png" alt="WhiteMirror" class="modal-logo">
     <h2 class="modal-title" id="modalTitle">欢迎回到WhiteMirror</h2>
 
     <form id="authForm" onsubmit="handleAuth(event)">
@@ -201,7 +201,7 @@
   const userBtn = document.getElementById('userBtn');
   const loginModal = document.getElementById('loginModal');
   const heroMain = document.getElementById('heroMain');
-  
+
   const step1Container = document.getElementById('step1Container');
   const step2Container = document.getElementById('step2Container');
   const modalTitle = document.getElementById('modalTitle');
@@ -214,6 +214,16 @@
   const btnSpinner = document.getElementById('btnSpinner');
 
   let currentStep = 'email'; // 'email', 'login', 'signup'
+
+  // 检查登录状态并导航到SaaS界面
+  function checkLoginAndNavigate() {
+    const currentUser = localStorage.getItem('wm_current_user');
+    if (currentUser) {
+      window.location.href = 'SaaS.html';
+    } else {
+      toggleLogin();
+    }
+  }
 
   function toggleLogin() {
     loginModal.classList.toggle('active');
@@ -266,6 +276,7 @@
         if (currentStep === 'login') {
           const users = JSON.parse(localStorage.getItem('wm_users') || '{}');
           if (users[email] === password) {
+            localStorage.setItem('wm_current_user', email);
             window.location.href = 'SaaS.html';
           } else {
             alert("密码错误 (演示环境：请输入您刚才注册时的密码)");
@@ -274,6 +285,7 @@
           const users = JSON.parse(localStorage.getItem('wm_users') || '{}');
           users[email] = password;
           localStorage.setItem('wm_users', JSON.stringify(users));
+          localStorage.setItem('wm_current_user', email);
           window.location.href = 'SaaS.html';
         }
       });
